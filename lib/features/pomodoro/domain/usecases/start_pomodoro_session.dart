@@ -1,8 +1,7 @@
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/usecase.dart';
+import '../../../../core/utils/result.dart';
 import '../entities/pomodoro_session.dart';
 import '../repositories/pomodoro_repository.dart';
 
@@ -12,7 +11,7 @@ class StartPomodoroSession implements UseCase<PomodoroSession, StartPomodoroSess
   StartPomodoroSession(this.repository);
 
   @override
-  Future<Either<Failure, PomodoroSession>> call(StartPomodoroSessionParams params) async {
+  Future<Result<PomodoroSession>> call(StartPomodoroSessionParams params) async {
     return await repository.createSession(params.type, params.currentSession);
   }
 }

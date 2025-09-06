@@ -1,8 +1,8 @@
-import 'package:dartz/dartz.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
+import '../../../../core/utils/result.dart';
 import '../../domain/entities/pomodoro_session.dart';
 import '../../domain/entities/pomodoro_settings.dart';
 import '../../domain/entities/pomodoro_statistics.dart';
@@ -19,7 +19,7 @@ class PomodoroRepositoryImpl implements PomodoroRepository {
   PomodoroRepositoryImpl({required this.localDataSource});
 
   @override
-  Future<Either<Failure, PomodoroSession>> createSession(PomodoroType type, int currentSession) async {
+  Future<Result<PomodoroSession>> createSession(PomodoroType type, int currentSession) async {
     try {
       final settings = await localDataSource.getSettings();
       final settingsEntity = settings.toEntity();
@@ -49,94 +49,94 @@ class PomodoroRepositoryImpl implements PomodoroRepository {
       );
 
       await localDataSource.cacheCurrentSession(session);
-      return Right(session.toEntity());
+      return success(session.toEntity());
     } on CacheException {
-      return Left(CacheFailure());
+      return failure(CacheFailure());
     } catch (e) {
-      return Left(UnexpectedFailure(e.toString()));
+      return failure(UnexpectedFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, PomodoroSession>> updateSession(PomodoroSession session) async {
+  Future<Result<PomodoroSession>> updateSession(PomodoroSession session) async {
     try {
       final sessionModel = PomodoroSessionModel.fromEntity(session);
       await localDataSource.cacheCurrentSession(sessionModel);
-      return Right(session);
+      return success(session);
     } on CacheException {
-      return Left(CacheFailure());
+      return failure(CacheFailure());
     } catch (e) {
-      return Left(UnexpectedFailure(e.toString()));
+      return failure(UnexpectedFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, PomodoroSession?>> getCurrentSession() async {
+  Future<Result<PomodoroSession?>> getCurrentSession() async {
     try {
       final sessionModel = await localDataSource.getCurrentSession();
-      return Right(sessionModel?.toEntity());
+      return success(sessionModel?.toEntity());
     } on CacheException {
-      return Left(CacheFailure());
+      return failure(CacheFailure());
     } catch (e) {
-      return Left(UnexpectedFailure(e.toString()));
+      return failure(UnexpectedFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, PomodoroSettings>> getSettings() async {
+  Future<Result<PomodoroSettings>> getSettings() async {
     try {
       final settingsModel = await localDataSource.getSettings();
-      return Right(settingsModel.toEntity());
+      return success(settingsModel.toEntity());
     } on CacheException {
-      return Left(CacheFailure());
+      return failure(CacheFailure());
     } catch (e) {
-      return Left(UnexpectedFailure(e.toString()));
+      return failure(UnexpectedFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, void>> updateSettings(PomodoroSettings settings) async {
+  Future<Result<void>> updateSettings(PomodoroSettings settings) async {
     try {
       final settingsModel = PomodoroSettingsModel.fromEntity(settings);
       await localDataSource.cacheSettings(settingsModel);
-      return const Right(null);
+      return success(null);
     } on CacheException {
-      return Left(CacheFailure());
+      return failure(CacheFailure());
     } catch (e) {
-      return Left(UnexpectedFailure(e.toString()));
+      return failure(UnexpectedFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, PomodoroStatistics>> getStatistics() async {
+  Future<Result<PomodoroStatistics>> getStatistics() async {
     try {
       final statisticsModel = await localDataSource.getStatistics();
-      return Right(statisticsModel.toEntity());
+      return success(statisticsModel.toEntity());
     } on CacheException {
-      return Left(CacheFailure());
+      return failure(CacheFailure());
     } catch (e) {
-      return Left(UnexpectedFailure(e.toString()));
+      return failure(UnexpectedFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, void>> updateStatistics(PomodoroStatistics statistics) async {
+  Future<Result<void>> updateStatistics(PomodoroStatistics statistics) async {
     try {
       final statisticsModel = PomodoroStatisticsModel.fromEntity(statistics);
       await localDataSource.cacheStatistics(statisticsModel);
-      return const Right(null);
+      return success(null);
     } on CacheException {
-      return Left(CacheFailure());
+      return failure(CacheFailure());
     } catch (e) {
-      return Left(UnexpectedFailure(e.toString()));
+      return failure(UnexpectedFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, void>> incrementCompletedSession(PomodoroType type, int durationMinutes) async {
+  Future<Result<void>> incrementCompletedSession(PomodoroType type, int durationMinutes) async {
     try {
       final statisticsResult = await getStatistics();
-      return statisticsResult.fold((failure) => Left(failure), (statistics) async {
+      return statisticsResult.fold((error) => failure(error), (statistics) async {
         final now = DateTime.now();
         final today = DateTime(now.year, now.month, now.day);
 
@@ -184,19 +184,31 @@ class PomodoroRepositoryImpl implements PomodoroRepository {
         return await updateStatistics(updatedStatistics);
       });
     } catch (e) {
-      return Left(UnexpectedFailure(e.toString()));
+      return failure(UnexpectedFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, void>> clearAllData() async {
+  Future<Result<void>> clearCurrentSession() async {
+    try {
+      await localDataSource.clearCurrentSession();
+      return success(null);
+    } on CacheException {
+      return failure(CacheFailure());
+    } catch (e) {
+      return failure(UnexpectedFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<void>> clearAllData() async {
     try {
       await localDataSource.clearAllData();
-      return const Right(null);
+      return success(null);
     } on CacheException {
-      return Left(CacheFailure());
+      return failure(CacheFailure());
     } catch (e) {
-      return Left(UnexpectedFailure(e.toString()));
+      return failure(UnexpectedFailure(e.toString()));
     }
   }
 }

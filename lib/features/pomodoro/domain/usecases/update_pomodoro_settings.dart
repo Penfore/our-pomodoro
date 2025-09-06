@@ -1,8 +1,7 @@
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/error/failures.dart';
 import '../../../../core/usecase/usecase.dart';
+import '../../../../core/utils/result.dart';
 import '../entities/pomodoro_settings.dart';
 import '../repositories/pomodoro_repository.dart';
 
@@ -12,7 +11,7 @@ class UpdatePomodoroSettings implements UseCase<void, UpdatePomodoroSettingsPara
   UpdatePomodoroSettings(this.repository);
 
   @override
-  Future<Either<Failure, void>> call(UpdatePomodoroSettingsParams params) async {
+  Future<Result<void>> call(UpdatePomodoroSettingsParams params) async {
     return await repository.updateSettings(params.settings);
   }
 }
