@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 
 import 'core/theme/app_theme.dart';
-import 'features/pomodoro/presentation/bloc/pomodoro_bloc.dart';
-import 'features/pomodoro/presentation/bloc/pomodoro_event.dart';
-import 'features/pomodoro/presentation/bloc/pomodoro_state.dart';
+import 'features/pomodoro/presentation/pages/timer_screen.dart';
 import 'injection_container.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
+
+  // Configure system UI to remove rounded corners
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarDividerColor: Colors.transparent,
+    ),
+  );
+
   runApp(const MyApp());
 }
 
@@ -23,35 +32,8 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: BlocProvider(create: (_) => di.sl<PomodoroBloc>()..add(LoadCurrentSessionEvent()), child: const PomodoroHomePage()),
+      home: const TimerScreen(),
       debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class PomodoroHomePage extends StatelessWidget {
-  const PomodoroHomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Our Pomodoro'), centerTitle: true),
-      body: BlocBuilder<PomodoroBloc, PomodoroState>(
-        builder: (context, state) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.access_time, size: 100, color: Colors.grey),
-                SizedBox(height: 20),
-                Text('Our Pomodoro', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-                SizedBox(height: 10),
-                Text('App inicializado com arquitetura clean!', style: TextStyle(fontSize: 16, color: Colors.grey)),
-              ],
-            ),
-          );
-        },
-      ),
     );
   }
 }

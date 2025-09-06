@@ -7,6 +7,7 @@ import 'core/platform/local_data_source.dart';
 import 'features/pomodoro/data/datasources/pomodoro_local_data_source.dart';
 import 'features/pomodoro/data/repositories/pomodoro_repository_impl.dart';
 import 'features/pomodoro/domain/repositories/pomodoro_repository.dart';
+import 'features/pomodoro/domain/usecases/clear_current_session.dart';
 import 'features/pomodoro/domain/usecases/get_current_session.dart';
 import 'features/pomodoro/domain/usecases/get_pomodoro_settings.dart';
 import 'features/pomodoro/domain/usecases/get_pomodoro_statistics.dart';
@@ -20,12 +21,16 @@ final sl = GetIt.instance;
 Future<void> init() async {
   //! Features - Pomodoro
   // Bloc
-  sl.registerFactory(() => PomodoroBloc(startPomodoroSession: sl(), updatePomodoroSession: sl(), getCurrentSession: sl()));
+  sl.registerFactory(
+    () =>
+        PomodoroBloc(startPomodoroSession: sl(), updatePomodoroSession: sl(), getCurrentSession: sl(), clearCurrentSession: sl()),
+  );
 
   // Use cases
   sl.registerLazySingleton(() => StartPomodoroSession(sl()));
   sl.registerLazySingleton(() => UpdatePomodoroSession(sl()));
   sl.registerLazySingleton(() => GetCurrentSession(sl()));
+  sl.registerLazySingleton(() => ClearCurrentSession(sl()));
   sl.registerLazySingleton(() => GetPomodoroSettings(sl()));
   sl.registerLazySingleton(() => UpdatePomodoroSettings(sl()));
   sl.registerLazySingleton(() => GetPomodoroStatistics(sl()));

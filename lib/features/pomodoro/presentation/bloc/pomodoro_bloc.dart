@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/usecase/usecase.dart';
+import '../../../../core/utils/result.dart';
 import '../../domain/entities/pomodoro_session.dart';
+import '../../domain/usecases/clear_current_session.dart';
 import '../../domain/usecases/get_current_session.dart';
 import '../../domain/usecases/start_pomodoro_session.dart';
 import '../../domain/usecases/update_pomodoro_session.dart';
@@ -14,12 +16,17 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
   final StartPomodoroSession startPomodoroSession;
   final UpdatePomodoroSession updatePomodoroSession;
   final GetCurrentSession getCurrentSession;
+  final ClearCurrentSession clearCurrentSession;
 
   Timer? _timer;
   PomodoroSession? _currentSession;
 
-  PomodoroBloc({required this.startPomodoroSession, required this.updatePomodoroSession, required this.getCurrentSession})
-    : super(PomodoroInitial()) {
+  PomodoroBloc({
+    required this.startPomodoroSession,
+    required this.updatePomodoroSession,
+    required this.getCurrentSession,
+    required this.clearCurrentSession,
+  }) : super(PomodoroInitial()) {
     on<StartPomodoroEvent>(_onStartPomodoro);
     on<PausePomodoroEvent>(_onPausePomodoro);
     on<ResumePomodoroEvent>(_onResumePomodoro);
@@ -83,6 +90,10 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
 
   Future<void> _onResetPomodoro(ResetPomodoroEvent event, Emitter<PomodoroState> emit) async {
     _stopTimer();
+
+    // Clear current session from repository
+    await clearCurrentSession(NoParams());
+
     _currentSession = null;
     emit(PomodoroInitial());
   }
@@ -155,8 +166,8 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
     }
   }
 
-  String _mapFailureToMessage(failure) {
-    // You can customize error messages based on failure type
-    return 'Algo deu errado. Tente novamente.';
+  String _mapFailureToMessage(dynamic failure) {
+    // Map specific failure types to user-friendly error messages
+    return 'An error occurred. Please try again.';
   }
 }
