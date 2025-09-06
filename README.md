@@ -205,6 +205,36 @@ We love contributions! Please read our [Contributing Guide](CONTRIBUTING.md) to 
 - 🎨 **Design** - UI/UX improvements
 - 🌍 **Translations** - Help localize the app
 
+## 🤖 AI-Assisted Development
+
+This project embraces modern development practices and acknowledges the role of AI in today's software development landscape.
+
+### Our Position on AI
+
+- 🎯 **AI as a Tool**: We recognize that AI tools (like GitHub Copilot, ChatGPT, etc.) are valuable assistants that help developers learn, explore new technologies, and increase productivity
+- 👥 **Human Review Required**: While AI can assist with code generation and problem-solving, **all code must be reviewed, understood, and validated by real humans** before being merged
+- 🧠 **Learning Enhancement**: AI tools are excellent for learning new patterns, understanding complex architectures, and exploring different implementation approaches
+- 🔍 **Quality Assurance**: Contributors should always understand the code they're submitting, regardless of how it was generated
+
+### Guidelines for AI-Assisted Contributions
+
+- ✅ **Use AI tools** to help with boilerplate code, documentation, or learning new concepts
+- ✅ **Review and understand** all AI-generated code before submitting
+- ✅ **Test thoroughly** - AI-generated code should be tested just like any other code
+- ✅ **Document your approach** - If AI helped solve a complex problem, consider documenting the solution for others
+- ❌ **Don't blindly copy-paste** AI-generated code without understanding it
+- ❌ **Don't rely solely on AI** for architectural decisions or critical business logic
+
+### The Human Touch
+
+While we embrace AI assistance, we believe in:
+- **Human creativity** in solving complex problems
+- **Human judgment** in making architectural decisions
+- **Human empathy** in understanding user needs
+- **Human responsibility** for code quality and security
+
+This project is built by humans, for humans, with AI as a helpful companion in our development journey.
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
