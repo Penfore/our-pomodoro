@@ -1,0 +1,46 @@
+name: our_pomodoro
+description: "A beautiful Pomodoro Timer app built with Flutter following Clean Architecture principles."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.9.2
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # Core dependencies
+  get_it: ^7.6.4
+  equatable: ^2.0.5
+  dartz: ^0.10.1
+
+  # State management
+  flutter_bloc: ^8.1.3
+
+  # Local storage
+  shared_preferences: ^2.2.2
+
+  # Networking (for future features)
+  dio: ^5.3.2
+  connectivity_plus: ^5.0.2
+
+  # UI
+  flutter_svg: ^2.0.9
+  lottie: ^2.7.0
+
+  # Utils
+  flutter_local_notifications: ^16.3.0
+  audioplayers: ^5.2.1
+  uuid: ^4.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+  # Testing
+  bloc_test: ^9.1.5
+  mocktail: ^1.0.1
+flutter:
+  uses-material-design: true
