@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../injection_container.dart' as di;
@@ -26,11 +25,7 @@ class TimerScreen extends StatelessWidget {
           ),
           centerTitle: true,
           elevation: 0,
-          backgroundColor: Colors.white,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.dark,
-          ),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           actions: [
             BlocBuilder<PomodoroBloc, PomodoroState>(
               builder: (context, state) {
@@ -52,15 +47,14 @@ class TimerScreen extends StatelessWidget {
             padding: const EdgeInsets.all(24.0),
             child: Column(
               children: [
-                const SizedBox(height: 40),
                 // Session info
-                SizedBox(height: 140, child: const SessionInfoWidget()),
+                SizedBox(height: 160, child: const SessionInfoWidget()),
                 const SizedBox(height: 48),
                 // Timer widget
-                SizedBox(height: 320, child: const PomodoroTimerWidget()),
+                SizedBox(height: 340, child: const PomodoroTimerWidget()),
                 const SizedBox(height: 24),
                 // Controls
-                Container(height: 120, padding: const EdgeInsets.symmetric(horizontal: 16), child: const TimerControlsWidget()),
+                Container(height: 140, padding: const EdgeInsets.symmetric(horizontal: 16), child: const TimerControlsWidget()),
                 const SizedBox(height: 80),
               ],
             ),

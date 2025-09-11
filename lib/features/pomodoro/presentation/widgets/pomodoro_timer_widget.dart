@@ -31,7 +31,7 @@ class PomodoroTimerWidget extends StatelessWidget {
   }
 
   Widget _buildTimerCircle(BuildContext context, PomodoroState state) {
-    final size = MediaQuery.of(context).size.width * 0.7;
+    final size = MediaQuery.of(context).size.width * 0.6;
     double progress = 0.0;
     Color circleColor = Theme.of(context).primaryColor;
 
