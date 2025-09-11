@@ -1,0 +1,94 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "🚀 Flutter: Debug",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "console": "debugConsole"
+    },
+    {
+      "name": "📱 Flutter: iOS Simulator",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "deviceId": "ios",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "console": "debugConsole"
+    },
+    {
+      "name": "🤖 Flutter: Android Emulator",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "deviceId": "android",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "console": "debugConsole"
+    },
+    {
+      "name": "🏗️ Flutter: Build iOS",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--release"
+      ],
+      "deviceId": "ios",
+      "cwd": "${workspaceFolder}",
+      "console": "debugConsole",
+      "preLaunchTask": "flutter-build-ios"
+    },
+    {
+      "name": "🏗️ Flutter: Build Android APK",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--release"
+      ],
+      "deviceId": "android",
+      "cwd": "${workspaceFolder}",
+      "console": "debugConsole",
+      "preLaunchTask": "flutter-build-android"
+    },
+    {
+      "name": "🧪 Flutter: Run Tests",
+      "request": "launch",
+      "type": "dart",
+      "program": "test",
+      "args": [
+        "--coverage"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "debugConsole",
+      "preLaunchTask": "flutter-test"
+    },
+    {
+      "name": "🧪 Flutter: Run Tests (Watch)",
+      "request": "launch",
+      "type": "dart",
+      "program": "test",
+      "args": [
+        "--coverage",
+        "--reporter=expanded"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "debugConsole",
+      "preLaunchTask": "flutter-test-watch"
+    },
+    {
+      "name": "🔍 Flutter: Test Specific File",
+      "request": "launch",
+      "type": "dart",
+      "program": "${file}",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "console": "debugConsole"
+    }
+  ]
+}

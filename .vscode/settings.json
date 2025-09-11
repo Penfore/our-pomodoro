@@ -1,0 +1,76 @@
+{
+  "dart.flutterSdkPath": null,
+  "dart.sdkPath": null,
+  "dart.openDevTools": "flutter",
+  "dart.debugExternalPackageLibraries": true,
+  "dart.debugSdkLibraries": false,
+  "dart.evaluateGettersInDebugViews": true,
+  "dart.previewFlutterUiGuides": true,
+  "dart.previewFlutterUiGuidesCustomTracking": true,
+  "dart.hotReloadOnSave": "all",
+  "dart.flutterHotReloadOnSave": "all",
+  "dart.flutterCreateAndroidLanguage": "kotlin",
+  "dart.flutterCreateIOSLanguage": "swift",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.rulers": [
+    80
+  ],
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.associations": {
+    "*.dart": "dart"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.gradle": true,
+    "**/build": true,
+    "**/.dart_tool": true,
+    "**/.packages": true,
+    "**/pubspec.lock": false
+  },
+  "search.exclude": {
+    "**/.git": true,
+    "**/.gradle": true,
+    "**/build": true,
+    "**/.dart_tool": true,
+    "**/ios/Pods": true,
+    "**/ios/.symlinks": true,
+    "**/ios/Flutter/App.framework": true,
+    "**/ios/Flutter/Flutter.framework": true,
+    "**/ios/Flutter/Flutter.podspec": true,
+    "**/ios/Flutter/Generated.xcconfig": true,
+    "**/ios/Flutter/app.flx": true,
+    "**/ios/Flutter/app.zip": true,
+    "**/ios/Flutter/flutter_assets": true,
+    "**/ios/ServiceDefinitions.json": true,
+    "**/ios/Runner/GeneratedPluginRegistrant.*": true,
+    "**/android/.gradle": true,
+    "**/android/captures": true,
+    "**/android/gradlew": true,
+    "**/android/gradlew.bat": true,
+    "**/android/local.properties": true,
+    "**/android/**/gradle-wrapper.jar": true,
+    "**/android/**/GeneratedPluginRegistrant.java": true,
+    "**/coverage/lcov.info": true
+  },
+  "flutter.androidStudioPaths": [],
+  "terminal.integrated.env.osx": {
+    "PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+  },
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#FF6B6B",
+    "statusBar.foreground": "#FFFFFF",
+    "statusBar.noFolderBackground": "#FF6B6B",
+    "statusBar.debuggingBackground": "#4ECDC4",
+    "statusBar.debuggingForeground": "#FFFFFF"
+  }
+}
