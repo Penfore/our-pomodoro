@@ -29,11 +29,14 @@
 - 🔄 **Auto Transitions** - Seamless flow between work and break sessions ✅
 - 📊 **Session Progress** - Real-time counter and visual progress indicators ✅
 - 🎛️ **Smart Controls** - Context-aware controls that adapt to session state ✅
-- � **Session Persistence** - Resume your session after app restart ✅
+- 💾 **Session Persistence** - Resume your session after app restart ✅
 - 🏗️ **Clean Architecture** - Maintainable, testable, and scalable codebase ✅
 - 🧪 **Comprehensive Testing** - 46 automated tests ensuring reliability ✅
+- 📱 **Cross Platform** - Works on Android and iOS (build for iOS requires macOS) ✅
+- � **Offline First** - All data stored locally, works without internet ✅
+- 🌙 **Basic Dark Theme** - System-based theme switching (needs UI improvements) ✅
 
-### 🚧 **In Development**
+### 🔧 **Technical Foundation Complete**
 - 📦 **Dependency Injection** - GetIt setup with manual configuration ✅
 - 🏛️ **Domain Layer** - Entities, repositories, and use cases ✅
 - 💾 **Data Layer** - Local storage with SharedPreferences ✅
@@ -44,9 +47,8 @@
 - 📊 **Productivity Statistics** - Track your focus sessions and streaks
 - 🔔 **Smart Notifications** - Get notified when sessions complete
 - 🎵 **Sound Alerts** - Customizable notification sounds
-- 🌙 **Dark/Light Theme** - Beautiful themes for any time of day
-- 📱 **Cross Platform** - Works on Android and iOS
-- 💾 **Offline First** - All data stored locally, works without internet
+- � **Enhanced Dark Theme** - Improve dark theme UI/UX design
+- 🌈 **Multiple Themes** - Additional color schemes and customization options
 
 ## 📱 Screenshots
 
@@ -77,6 +79,7 @@
 - **Intuitive Color Coding** - Different colors for work (red) and break (green/blue) sessions
 - **Real-time Updates** - Session counter and timer update smoothly
 - **Confirmation Dialogs** - Prevents accidental actions with user-friendly prompts
+- **System Theme Support** - Automatically follows system dark/light mode (basic implementation)
 
 ### 🔄 **Complete Pomodoro Flow Demo**
 
@@ -134,10 +137,15 @@ flutter build apk --release
 flutter build appbundle --release
 ```
 
-**iOS**
+**iOS (requires macOS)**
 ```bash
 flutter build ios --release
 ```
+
+> 📱 **Platform Notes**:
+> - **Android**: Fully tested and APK available in releases
+> - **iOS**: Buildable on macOS, but not officially distributed yet
+> - **Cross-platform compatibility**: Same codebase works on both platforms
 
 ## 🏗️ Architecture
 
@@ -212,22 +220,25 @@ open coverage/html/index.html
 - [x] Circular progress timer with responsive design
 - [x] Session state persistence
 
-### Phase 3: UI/UX �
+### Phase 3: UI/UX 🚧
 - [x] Modern, intuitive timer interface
 - [x] Material Design 3 components
-- [ ] Smooth animations
-- [ ] Dark/Light theme switching
-- [ ] Responsive design improvements
+- [x] Basic dark/light theme (needs improvements)
+- [ ] Enhanced dark theme design
+- [ ] Smooth animations and transitions
+- [ ] Multiple color themes
+- [ ] Advanced responsive design
 
 ### Phase 4: Advanced Features 📝
 - [ ] Statistics dashboard
 - [ ] Customizable settings
 - [ ] Export data functionality
-- [ ] Widgets for home screen
+- [ ] Home screen widgets
 
 ### Phase 5: Platform Features 📝
-- [ ] Background execution
-- [ ] System integration
+- [ ] Background execution and notifications
+- [ ] iOS App Store distribution
+- [ ] System integration improvements
 - [ ] Accessibility features
 - [ ] Performance optimizations
 
