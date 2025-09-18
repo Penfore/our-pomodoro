@@ -44,4 +44,44 @@ class DialogUtils {
       },
     );
   }
+
+  static void showSkipConfirmation(BuildContext context) {
+    final pomodoroBloc = context.read<PomodoroBloc>();
+
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Pular Sessão', textAlign: TextAlign.center),
+          content: const Text(
+            'Tem certeza que deseja pular esta sessão? '
+            'A sessão atual será marcada como concluída.',
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.grey400,
+                foregroundColor: AppColors.textLight,
+              ),
+              child: const Text('Cancelar'),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                pomodoroBloc.add(SkipPomodoroEvent());
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple.shade400,
+                foregroundColor: AppColors.textLight,
+              ),
+              child: const Text('Pular'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
