@@ -105,7 +105,8 @@ class PomodoroLocalDataSourceImpl implements PomodoroLocalDataSource {
     try {
       final statisticsJson = await localDataSource.getString(statisticsKey);
       if (statisticsJson != null) {
-        final statisticsMap = json.decode(statisticsJson) as Map<String, dynamic>;
+        final statisticsMap =
+            json.decode(statisticsJson) as Map<String, dynamic>;
         return PomodoroStatisticsModel.fromJson(statisticsMap);
       }
       // Return empty statistics if none cached

@@ -59,7 +59,9 @@ class PomodoroSessionModel {
       remainingSeconds: json['remainingSeconds'],
       status: PomodoroStatus.values[json['status']],
       startedAt: DateTime.parse(json['startedAt']),
-      completedAt: json['completedAt'] != null ? DateTime.parse(json['completedAt']) : null,
+      completedAt: json['completedAt'] != null
+          ? DateTime.parse(json['completedAt'])
+          : null,
       currentSession: json['currentSession'],
       totalSessions: json['totalSessions'],
     );

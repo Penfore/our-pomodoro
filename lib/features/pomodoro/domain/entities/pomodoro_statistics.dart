@@ -29,9 +29,12 @@ class PomodoroStatistics extends Equatable {
     Map<DateTime, int>? dailySessions,
   }) {
     return PomodoroStatistics(
-      totalCompletedSessions: totalCompletedSessions ?? this.totalCompletedSessions,
-      totalFocusTimeMinutes: totalFocusTimeMinutes ?? this.totalFocusTimeMinutes,
-      totalBreakTimeMinutes: totalBreakTimeMinutes ?? this.totalBreakTimeMinutes,
+      totalCompletedSessions:
+          totalCompletedSessions ?? this.totalCompletedSessions,
+      totalFocusTimeMinutes:
+          totalFocusTimeMinutes ?? this.totalFocusTimeMinutes,
+      totalBreakTimeMinutes:
+          totalBreakTimeMinutes ?? this.totalBreakTimeMinutes,
       currentStreak: currentStreak ?? this.currentStreak,
       longestStreak: longestStreak ?? this.longestStreak,
       lastSessionDate: lastSessionDate ?? this.lastSessionDate,

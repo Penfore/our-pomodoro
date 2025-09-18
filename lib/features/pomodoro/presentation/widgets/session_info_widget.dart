@@ -14,7 +14,11 @@ class SessionInfoWidget extends StatelessWidget {
       builder: (context, state) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [_buildSessionCounter(state), const SizedBox(height: 16), _buildProgressIndicator(state)],
+          children: [
+            _buildSessionCounter(state),
+            const SizedBox(height: 16),
+            _buildProgressIndicator(state),
+          ],
         );
       },
     );
@@ -24,7 +28,9 @@ class SessionInfoWidget extends StatelessWidget {
     int currentSession = 1;
     int totalSessions = 4;
 
-    if (state is PomodoroRunning || state is PomodoroPaused || state is PomodoroCompleted) {
+    if (state is PomodoroRunning ||
+        state is PomodoroPaused ||
+        state is PomodoroCompleted) {
       final session = (state as dynamic).session as PomodoroSession;
       currentSession = session.currentSession;
       totalSessions = session.totalSessions;
@@ -36,14 +42,23 @@ class SessionInfoWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 8, offset: const Offset(0, 2))],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(Icons.timeline, size: 20),
             const SizedBox(width: 8),
-            Text('Sessão $currentSession de $totalSessions', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+            Text(
+              'Sessão $currentSession de $totalSessions',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
           ],
         ),
       ),
@@ -51,14 +66,19 @@ class SessionInfoWidget extends StatelessWidget {
   }
 
   Widget _buildProgressIndicator(PomodoroState state) {
-    if (state is! PomodoroRunning && state is! PomodoroPaused && state is! PomodoroCompleted) {
+    if (state is! PomodoroRunning &&
+        state is! PomodoroPaused &&
+        state is! PomodoroCompleted) {
       return Container(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Icon(Icons.access_time, size: 32, color: Colors.grey.shade400),
             const SizedBox(height: 8),
-            Text('Aguardando início da sessão', style: TextStyle(fontSize: 14, color: Colors.grey.shade600)),
+            Text(
+              'Aguardando início da sessão',
+              style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+            ),
           ],
         ),
       );
@@ -73,10 +93,26 @@ class SessionInfoWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildSessionDot(0, session.currentSession, session.totalSessions),
-              _buildSessionDot(1, session.currentSession, session.totalSessions),
-              _buildSessionDot(2, session.currentSession, session.totalSessions),
-              _buildSessionDot(3, session.currentSession, session.totalSessions),
+              _buildSessionDot(
+                0,
+                session.currentSession,
+                session.totalSessions,
+              ),
+              _buildSessionDot(
+                1,
+                session.currentSession,
+                session.totalSessions,
+              ),
+              _buildSessionDot(
+                2,
+                session.currentSession,
+                session.totalSessions,
+              ),
+              _buildSessionDot(
+                3,
+                session.currentSession,
+                session.totalSessions,
+              ),
             ],
           ),
           const SizedBox(height: 12),
@@ -109,7 +145,9 @@ class SessionInfoWidget extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: dotColor,
-        border: isCurrent ? Border.all(color: Colors.blue.shade600, width: 2) : null,
+        border: isCurrent
+            ? Border.all(color: Colors.blue.shade600, width: 2)
+            : null,
       ),
     );
   }
@@ -124,7 +162,9 @@ class SessionInfoWidget extends StatelessWidget {
     } else if (session.isPaused) {
       return 'Timer pausado. Continue quando estiver pronto! ⏸️';
     } else if (session.isRunning) {
-      final typeMessage = session.type == PomodoroType.work ? 'Foco total! Você consegue! 🎯' : 'Aproveite sua pausa merecida! ☕';
+      final typeMessage = session.type == PomodoroType.work
+          ? 'Foco total! Você consegue! 🎯'
+          : 'Aproveite sua pausa merecida! ☕';
       return typeMessage;
     }
 

@@ -5,7 +5,8 @@ import '../../../../core/utils/result.dart';
 import '../entities/pomodoro_settings.dart';
 import '../repositories/pomodoro_repository.dart';
 
-class UpdatePomodoroSettings implements UseCase<void, UpdatePomodoroSettingsParams> {
+class UpdatePomodoroSettings
+    implements UseCase<void, UpdatePomodoroSettingsParams> {
   final PomodoroRepository repository;
 
   UpdatePomodoroSettings(this.repository);

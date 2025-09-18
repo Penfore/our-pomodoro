@@ -22,8 +22,12 @@ Future<void> init() async {
   //! Features - Pomodoro
   // Bloc
   sl.registerFactory(
-    () =>
-        PomodoroBloc(startPomodoroSession: sl(), updatePomodoroSession: sl(), getCurrentSession: sl(), clearCurrentSession: sl()),
+    () => PomodoroBloc(
+      startPomodoroSession: sl(),
+      updatePomodoroSession: sl(),
+      getCurrentSession: sl(),
+      clearCurrentSession: sl(),
+    ),
   );
 
   // Use cases
@@ -36,14 +40,20 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetPomodoroStatistics(sl()));
 
   // Repository
-  sl.registerLazySingleton<PomodoroRepository>(() => PomodoroRepositoryImpl(localDataSource: sl()));
+  sl.registerLazySingleton<PomodoroRepository>(
+    () => PomodoroRepositoryImpl(localDataSource: sl()),
+  );
 
   // Data sources
-  sl.registerLazySingleton<PomodoroLocalDataSource>(() => PomodoroLocalDataSourceImpl(localDataSource: sl()));
+  sl.registerLazySingleton<PomodoroLocalDataSource>(
+    () => PomodoroLocalDataSourceImpl(localDataSource: sl()),
+  );
 
   //! Core
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
-  sl.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl(sharedPreferences: sl()));
+  sl.registerLazySingleton<LocalDataSource>(
+    () => LocalDataSourceImpl(sharedPreferences: sl()),
+  );
 
   //! External
   final sharedPreferences = await SharedPreferences.getInstance();

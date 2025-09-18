@@ -84,20 +84,26 @@ void main() {
     });
 
     test('PomodoroType enum has correct values', () {
-      expect(PomodoroType.values, containsAll([
-        PomodoroType.work,
-        PomodoroType.shortBreak,
-        PomodoroType.longBreak,
-      ]));
+      expect(
+        PomodoroType.values,
+        containsAll([
+          PomodoroType.work,
+          PomodoroType.shortBreak,
+          PomodoroType.longBreak,
+        ]),
+      );
     });
 
     test('PomodoroStatus enum has correct values', () {
-      expect(PomodoroStatus.values, containsAll([
-        PomodoroStatus.initial,
-        PomodoroStatus.running,
-        PomodoroStatus.paused,
-        PomodoroStatus.completed,
-      ]));
+      expect(
+        PomodoroStatus.values,
+        containsAll([
+          PomodoroStatus.initial,
+          PomodoroStatus.running,
+          PomodoroStatus.paused,
+          PomodoroStatus.completed,
+        ]),
+      );
     });
 
     test('Work session should last 25 minutes (1500 seconds)', () {
@@ -143,21 +149,21 @@ void main() {
     test('Pomodoro work session should be 25 minutes', () {
       const workDuration = 25;
       const workSeconds = workDuration * 60;
-      
+
       expect(workSeconds, 1500);
     });
 
     test('Short break should be 5 minutes', () {
       const shortBreakDuration = 5;
       const shortBreakSeconds = shortBreakDuration * 60;
-      
+
       expect(shortBreakSeconds, 300);
     });
 
     test('Long break should be 15 minutes', () {
       const longBreakDuration = 15;
       const longBreakSeconds = longBreakDuration * 60;
-      
+
       expect(longBreakSeconds, 900);
     });
 
@@ -177,11 +183,11 @@ void main() {
 
     test('Session counting logic', () {
       const totalSessions = 4;
-      
+
       for (int i = 1; i <= totalSessions; i++) {
         expect(i, isPositive);
         expect(i, lessThanOrEqualTo(totalSessions));
-        
+
         // After 4th session, should be complete
         if (i == totalSessions) {
           expect(i == totalSessions, isTrue);
@@ -191,13 +197,13 @@ void main() {
 
     test('Time decrements correctly', () {
       int remainingTime = 1500; // 25 minutes
-      
+
       // Simulate timer ticks
       for (int tick = 0; tick < 10; tick++) {
         expect(remainingTime, greaterThanOrEqualTo(0));
         remainingTime--;
       }
-      
+
       expect(remainingTime, 1490);
     });
 
@@ -205,20 +211,20 @@ void main() {
       // Test work -> short break transition
       var currentType = PomodoroType.work;
       var currentSession = 1;
-      
+
       // After work session ends
       if (currentSession < 4 && currentSession % 2 == 1) {
         currentType = PomodoroType.shortBreak;
       }
-      
+
       expect(currentType, PomodoroType.shortBreak);
-      
+
       // Test long break after 4th session
       currentSession = 4;
       if (currentSession == 4) {
         currentType = PomodoroType.longBreak;
       }
-      
+
       expect(currentType, PomodoroType.longBreak);
     });
   });
@@ -229,9 +235,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             appBar: AppBar(title: const Text('Test App')),
-            body: const Center(
-              child: Text('Hello, World!'),
-            ),
+            body: const Center(child: Text('Hello, World!')),
           ),
         ),
       );
@@ -240,11 +244,14 @@ void main() {
       expect(find.text('Hello, World!'), findsOneWidget);
     });
 
-    testWidgets('Timer display widget shows formatted time', (WidgetTester tester) async {
+    testWidgets('Timer display widget shows formatted time', (
+      WidgetTester tester,
+    ) async {
       const remainingSeconds = 1500; // 25 minutes
-      final minutes = remainingSeconds ~/ 60;
-      final seconds = remainingSeconds % 60;
-      final timeString = '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+      const minutes = remainingSeconds ~/ 60;
+      const seconds = remainingSeconds % 60;
+      final timeString =
+          '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
 
       await tester.pumpWidget(
         MaterialApp(
@@ -255,7 +262,10 @@ void main() {
                 children: [
                   Text(
                     timeString,
-                    style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   const Text('Pomodoro Timer'),
@@ -270,20 +280,22 @@ void main() {
       expect(find.text('Pomodoro Timer'), findsOneWidget);
     });
 
-    testWidgets('Session info display shows correct information', (WidgetTester tester) async {
+    testWidgets('Session info display shows correct information', (
+      WidgetTester tester,
+    ) async {
       const currentSession = 1;
       const totalSessions = 4;
       const sessionType = 'TRABALHO';
 
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: Center(
               child: Column(
                 children: [
                   Text('Sessão $currentSession de $totalSessions'),
-                  const SizedBox(height: 10),
-                  const Text(sessionType),
+                  SizedBox(height: 10),
+                  Text(sessionType),
                 ],
               ),
             ),
@@ -345,7 +357,9 @@ void main() {
       expect(find.text('Pausar'), findsNothing);
     });
 
-    testWidgets('Pomodoro type displays show correct text', (WidgetTester tester) async {
+    testWidgets('Pomodoro type displays show correct text', (
+      WidgetTester tester,
+    ) async {
       String getDisplayText(PomodoroType type) {
         switch (type) {
           case PomodoroType.work:

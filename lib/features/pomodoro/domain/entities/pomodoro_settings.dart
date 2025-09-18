@@ -35,11 +35,13 @@ class PomodoroSettings extends Equatable {
       workMinutes: workMinutes ?? this.workMinutes,
       shortBreakMinutes: shortBreakMinutes ?? this.shortBreakMinutes,
       longBreakMinutes: longBreakMinutes ?? this.longBreakMinutes,
-      sessionsUntilLongBreak: sessionsUntilLongBreak ?? this.sessionsUntilLongBreak,
+      sessionsUntilLongBreak:
+          sessionsUntilLongBreak ?? this.sessionsUntilLongBreak,
       soundEnabled: soundEnabled ?? this.soundEnabled,
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
       autoStartBreaks: autoStartBreaks ?? this.autoStartBreaks,
-      autoStartWorkSessions: autoStartWorkSessions ?? this.autoStartWorkSessions,
+      autoStartWorkSessions:
+          autoStartWorkSessions ?? this.autoStartWorkSessions,
     );
   }
 

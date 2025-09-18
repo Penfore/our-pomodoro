@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:our_pomodoro/core/theme/app_colors.dart';
 
 import '../../features/pomodoro/presentation/bloc/pomodoro_bloc.dart';
 import '../../features/pomodoro/presentation/bloc/pomodoro_event.dart';
+import '../theme/app_colors.dart';
 
 class DialogUtils {
   static void showResetConfirmation(BuildContext context) {
     final pomodoroBloc = context.read<PomodoroBloc>();
 
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
@@ -21,7 +21,10 @@ class DialogUtils {
           actions: [
             ElevatedButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              style: ElevatedButton.styleFrom(backgroundColor: AppColors.grey400, foregroundColor: AppColors.textLight),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.grey400,
+                foregroundColor: AppColors.textLight,
+              ),
               child: const Text('Cancelar'),
             ),
             const SizedBox(height: 8),
@@ -30,7 +33,10 @@ class DialogUtils {
                 Navigator.of(dialogContext).pop();
                 pomodoroBloc.add(ResetPomodoroEvent());
               },
-              style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary, foregroundColor: AppColors.textLight),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.textLight,
+              ),
               child: const Text('Resetar'),
             ),
           ],

@@ -19,7 +19,10 @@ class PomodoroRepositoryImpl implements PomodoroRepository {
   PomodoroRepositoryImpl({required this.localDataSource});
 
   @override
-  Future<Result<PomodoroSession>> createSession(PomodoroType type, int currentSession) async {
+  Future<Result<PomodoroSession>> createSession(
+    PomodoroType type,
+    int currentSession,
+  ) async {
     try {
       final settings = await localDataSource.getSettings();
       final settingsEntity = settings.toEntity();
@@ -133,14 +136,21 @@ class PomodoroRepositoryImpl implements PomodoroRepository {
   }
 
   @override
-  Future<Result<void>> incrementCompletedSession(PomodoroType type, int durationMinutes) async {
+  Future<Result<void>> incrementCompletedSession(
+    PomodoroType type,
+    int durationMinutes,
+  ) async {
     try {
       final statisticsResult = await getStatistics();
-      return statisticsResult.fold((error) => failure(error), (statistics) async {
+      return statisticsResult.fold((error) => failure(error), (
+        statistics,
+      ) async {
         final now = DateTime.now();
         final today = DateTime(now.year, now.month, now.day);
 
-        final newDailySessions = Map<DateTime, int>.from(statistics.dailySessions);
+        final newDailySessions = Map<DateTime, int>.from(
+          statistics.dailySessions,
+        );
         newDailySessions[today] = (newDailySessions[today] ?? 0) + 1;
 
         // Calculate streak
@@ -176,7 +186,9 @@ class PomodoroRepositoryImpl implements PomodoroRepository {
               ? statistics.totalBreakTimeMinutes + durationMinutes
               : statistics.totalBreakTimeMinutes,
           currentStreak: newCurrentStreak,
-          longestStreak: newCurrentStreak > statistics.longestStreak ? newCurrentStreak : statistics.longestStreak,
+          longestStreak: newCurrentStreak > statistics.longestStreak
+              ? newCurrentStreak
+              : statistics.longestStreak,
           lastSessionDate: now,
           dailySessions: newDailySessions,
         );

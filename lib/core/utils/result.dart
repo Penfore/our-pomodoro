@@ -14,7 +14,8 @@ final class Success<T> extends Result<T> {
   Success(this.value);
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is Success<T> && value == other.value;
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Success<T> && value == other.value;
 
   @override
   int get hashCode => value.hashCode;
@@ -29,7 +30,9 @@ final class ResultFailure<T> extends Result<T> {
   ResultFailure(this.error);
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ResultFailure<T> && error == other.error;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ResultFailure<T> && error == other.error;
 
   @override
   int get hashCode => error.hashCode;
@@ -60,7 +63,10 @@ extension ResultExtensions<T> on Result<T> {
 
   /// Folds the result into a single value using provided functions
   /// Similar to Either.fold() from dartz
-  R fold<R>(R Function(core_failures.Failure failure) onFailure, R Function(T success) onSuccess) {
+  R fold<R>(
+    R Function(core_failures.Failure failure) onFailure,
+    R Function(T success) onSuccess,
+  ) {
     return switch (this) {
       Success<T>(value: final value) => onSuccess(value),
       ResultFailure<T>(error: final error) => onFailure(error),
@@ -76,7 +82,9 @@ extension ResultExtensions<T> on Result<T> {
   }
 
   /// Maps the failure value to a new failure type
-  Result<T> mapFailure(core_failures.Failure Function(core_failures.Failure failure) mapper) {
+  Result<T> mapFailure(
+    core_failures.Failure Function(core_failures.Failure failure) mapper,
+  ) {
     return switch (this) {
       Success<T>() => this,
       ResultFailure<T>(error: final error) => ResultFailure(mapper(error)),
@@ -116,7 +124,9 @@ extension ResultExtensions<T> on Result<T> {
   /// Swaps Success and Failure (Success becomes Failure with provided error)
   Result<core_failures.Failure> swap(T Function() successToFailureValue) {
     return switch (this) {
-      Success<T>() => ResultFailure(core_failures.UnexpectedFailure('Swapped success')),
+      Success<T>() => ResultFailure(
+        const core_failures.UnexpectedFailure('Swapped success'),
+      ),
       ResultFailure<T>(error: final error) => Success(error),
     };
   }
@@ -138,15 +148,21 @@ extension ResultExtensions<T> on Result<T> {
   }
 
   /// Filters the success value, converting to failure if predicate fails
-  Result<T> filter(bool Function(T value) predicate, core_failures.Failure Function() failureIfFalse) {
+  Result<T> filter(
+    bool Function(T value) predicate,
+    core_failures.Failure Function() failureIfFalse,
+  ) {
     return switch (this) {
-      Success<T>(value: final value) => predicate(value) ? this : ResultFailure(failureIfFalse()),
+      Success<T>(value: final value) =>
+        predicate(value) ? this : ResultFailure(failureIfFalse()),
       ResultFailure<T>() => this,
     };
   }
 
   /// Converts to Future<Result<T>> for async chaining
-  Future<Result<R>> flatMapAsync<R>(Future<Result<R>> Function(T value) mapper) async {
+  Future<Result<R>> flatMapAsync<R>(
+    Future<Result<R>> Function(T value) mapper,
+  ) async {
     return switch (this) {
       Success<T>(value: final value) => await mapper(value),
       ResultFailure<T>(error: final error) => ResultFailure(error),
@@ -160,7 +176,8 @@ Result<T> failure<T>(core_failures.Failure error) => ResultFailure(error);
 
 /// Async helper functions
 Future<Result<T>> successAsync<T>(T value) async => Success(value);
-Future<Result<T>> failureAsync<T>(core_failures.Failure error) async => ResultFailure(error);
+Future<Result<T>> failureAsync<T>(core_failures.Failure error) async =>
+    ResultFailure(error);
 
 /// Combines multiple Results into one
 Result<List<T>> combineResults<T>(List<Result<T>> results) {

@@ -8,7 +8,10 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary, brightness: Brightness.light),
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.primary,
+        brightness: Brightness.light,
+      ),
 
       // App Bar Theme
       appBarTheme: const AppBarTheme(
@@ -23,7 +26,9 @@ class AppTheme {
       cardTheme: const CardThemeData(
         color: AppColors.surface,
         elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
       ),
 
       // Elevated Button Theme
@@ -32,7 +37,9 @@ class AppTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.textLight,
           minimumSize: const Size(double.infinity, 56),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
           textStyle: AppTextStyles.buttonLarge,
         ),
       ),
@@ -43,22 +50,33 @@ class AppTheme {
           foregroundColor: AppColors.primary,
           minimumSize: const Size(double.infinity, 56),
           side: const BorderSide(color: AppColors.primary, width: 1),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           textStyle: AppTextStyles.buttonLarge,
         ),
       ),
 
       // Text Button Theme
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(foregroundColor: AppColors.primary, textStyle: AppTextStyles.buttonMedium),
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          textStyle: AppTextStyles.buttonMedium,
+        ),
       ),
 
       // Input Decoration Theme
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.grey50,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.primary, width: 2),
@@ -67,7 +85,10 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.error, width: 1),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
       ),
 
       // Floating Action Button Theme
@@ -77,7 +98,9 @@ class AppTheme {
       ),
 
       // Progress Indicator Theme
-      progressIndicatorTheme: const ProgressIndicatorThemeData(color: AppColors.primary),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: AppColors.primary,
+      ),
 
       // Switch Theme
       switchTheme: SwitchThemeData(
@@ -96,7 +119,10 @@ class AppTheme {
       ),
 
       // Divider Theme
-      dividerTheme: const DividerThemeData(color: AppColors.grey200, thickness: 1),
+      dividerTheme: const DividerThemeData(
+        color: AppColors.grey200,
+        thickness: 1,
+      ),
     );
   }
 
@@ -104,7 +130,10 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary, brightness: Brightness.dark),
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.primary,
+        brightness: Brightness.dark,
+      ),
 
       scaffoldBackgroundColor: AppColors.surfaceDark,
 
@@ -121,7 +150,9 @@ class AppTheme {
       cardTheme: const CardThemeData(
         color: AppColors.grey700,
         elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
       ),
 
       // Elevated Button Theme
@@ -130,7 +161,9 @@ class AppTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.textLight,
           minimumSize: const Size(double.infinity, 56),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           textStyle: AppTextStyles.buttonLarge,
         ),
       ),
@@ -141,22 +174,33 @@ class AppTheme {
           foregroundColor: AppColors.primary,
           minimumSize: const Size(double.infinity, 56),
           side: const BorderSide(color: AppColors.primary, width: 1),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           textStyle: AppTextStyles.buttonLarge,
         ),
       ),
 
       // Text Button Theme
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(foregroundColor: AppColors.primary, textStyle: AppTextStyles.buttonMedium),
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          textStyle: AppTextStyles.buttonMedium,
+        ),
       ),
 
       // Input Decoration Theme
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.grey800,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.primary, width: 2),
@@ -165,7 +209,10 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.error, width: 1),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
       ),
 
       // Floating Action Button Theme
@@ -175,7 +222,9 @@ class AppTheme {
       ),
 
       // Progress Indicator Theme
-      progressIndicatorTheme: const ProgressIndicatorThemeData(color: AppColors.primary),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: AppColors.primary,
+      ),
 
       // Switch Theme
       switchTheme: SwitchThemeData(
@@ -194,7 +243,10 @@ class AppTheme {
       ),
 
       // Divider Theme
-      dividerTheme: const DividerThemeData(color: AppColors.grey600, thickness: 1),
+      dividerTheme: const DividerThemeData(
+        color: AppColors.grey600,
+        thickness: 1,
+      ),
     );
   }
 }

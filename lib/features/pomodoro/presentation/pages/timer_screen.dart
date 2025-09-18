@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:our_pomodoro/core/utils/dialog_utils.dart';
 
+import '../../../../core/utils/dialog_utils.dart';
 import '../../../../injection_container.dart' as di;
 import '../../domain/entities/pomodoro_session.dart';
 import '../bloc/pomodoro_bloc.dart';
@@ -17,12 +17,17 @@ class TimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => di.sl<PomodoroBloc>()..add(LoadCurrentSessionEvent()),
+      create: (context) =>
+          di.sl<PomodoroBloc>()..add(LoadCurrentSessionEvent()),
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
             '🍅 Our Pomodoro',
-            style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600, fontSize: 20),
+            style: TextStyle(
+              color: Colors.black87,
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
+            ),
           ),
           centerTitle: true,
           elevation: 0,
@@ -49,11 +54,15 @@ class TimerScreen extends StatelessWidget {
             child: Column(
               children: [
                 // Session info
-                SizedBox(height: 160, child: const SessionInfoWidget()),
+                const SizedBox(height: 160, child: SessionInfoWidget()),
                 // Timer widget
-                SizedBox(height: 300, child: const PomodoroTimerWidget()),
+                const SizedBox(height: 300, child: PomodoroTimerWidget()),
                 // Controls
-                Container(height: 140, padding: const EdgeInsets.symmetric(horizontal: 16), child: const TimerControlsWidget()),
+                Container(
+                  height: 140,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: const TimerControlsWidget(),
+                ),
                 const SizedBox(height: 80),
               ],
             ),

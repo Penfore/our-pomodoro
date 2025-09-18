@@ -44,7 +44,8 @@ class PomodoroStatisticsModel {
   }
 
   factory PomodoroStatisticsModel.fromJson(Map<String, dynamic> json) {
-    final dailySessionsJson = json['dailySessions'] as Map<String, dynamic>? ?? {};
+    final dailySessionsJson =
+        json['dailySessions'] as Map<String, dynamic>? ?? {};
     final dailySessions = <DateTime, int>{};
 
     for (final entry in dailySessionsJson.entries) {
@@ -57,7 +58,9 @@ class PomodoroStatisticsModel {
       totalBreakTimeMinutes: json['totalBreakTimeMinutes'] ?? 0,
       currentStreak: json['currentStreak'] ?? 0,
       longestStreak: json['longestStreak'] ?? 0,
-      lastSessionDate: json['lastSessionDate'] != null ? DateTime.parse(json['lastSessionDate']) : null,
+      lastSessionDate: json['lastSessionDate'] != null
+          ? DateTime.parse(json['lastSessionDate'])
+          : null,
       dailySessions: dailySessions,
     );
   }
@@ -89,9 +92,12 @@ class PomodoroStatisticsModel {
     Map<DateTime, int>? dailySessions,
   }) {
     return PomodoroStatisticsModel(
-      totalCompletedSessions: totalCompletedSessions ?? this.totalCompletedSessions,
-      totalFocusTimeMinutes: totalFocusTimeMinutes ?? this.totalFocusTimeMinutes,
-      totalBreakTimeMinutes: totalBreakTimeMinutes ?? this.totalBreakTimeMinutes,
+      totalCompletedSessions:
+          totalCompletedSessions ?? this.totalCompletedSessions,
+      totalFocusTimeMinutes:
+          totalFocusTimeMinutes ?? this.totalFocusTimeMinutes,
+      totalBreakTimeMinutes:
+          totalBreakTimeMinutes ?? this.totalBreakTimeMinutes,
       currentStreak: currentStreak ?? this.currentStreak,
       longestStreak: longestStreak ?? this.longestStreak,
       lastSessionDate: lastSessionDate ?? this.lastSessionDate,

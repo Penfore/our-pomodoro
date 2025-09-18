@@ -5,7 +5,10 @@ import '../entities/pomodoro_statistics.dart';
 
 abstract class PomodoroRepository {
   // Session Management
-  Future<Result<PomodoroSession>> createSession(PomodoroType type, int currentSession);
+  Future<Result<PomodoroSession>> createSession(
+    PomodoroType type,
+    int currentSession,
+  );
   Future<Result<PomodoroSession>> updateSession(PomodoroSession session);
   Future<Result<PomodoroSession?>> getCurrentSession();
 
@@ -16,7 +19,10 @@ abstract class PomodoroRepository {
   // Statistics Management
   Future<Result<PomodoroStatistics>> getStatistics();
   Future<Result<void>> updateStatistics(PomodoroStatistics statistics);
-  Future<Result<void>> incrementCompletedSession(PomodoroType type, int durationMinutes);
+  Future<Result<void>> incrementCompletedSession(
+    PomodoroType type,
+    int durationMinutes,
+  );
 
   // Data Management
   Future<Result<void>> clearCurrentSession();

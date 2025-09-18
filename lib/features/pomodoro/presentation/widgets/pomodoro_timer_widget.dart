@@ -60,13 +60,20 @@ class PomodoroTimerWidget extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: circleColor.withValues(alpha: 0.1),
-              border: Border.all(color: circleColor.withValues(alpha: 0.2), width: 2),
+              border: Border.all(
+                color: circleColor.withValues(alpha: 0.2),
+                width: 2,
+              ),
             ),
           ),
           // Progress circle
           CustomPaint(
             size: Size(size, size),
-            painter: _CircularProgressPainter(progress: progress, color: circleColor, strokeWidth: 6),
+            painter: _CircularProgressPainter(
+              progress: progress,
+              color: circleColor,
+              strokeWidth: 6,
+            ),
           ),
           // Timer display
           Center(child: _buildTimerDisplay(state)),
@@ -87,7 +94,11 @@ class PomodoroTimerWidget extends StatelessWidget {
         children: [
           Text(
             session.formattedTime,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'monospace',
+            ),
           ),
           const SizedBox(height: 2),
           Container(
@@ -98,7 +109,11 @@ class PomodoroTimerWidget extends StatelessWidget {
             ),
             child: Text(
               _getTypeLabel(session.type),
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: _getColorForType(session.type)),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: _getColorForType(session.type),
+              ),
             ),
           ),
         ],
@@ -110,10 +125,18 @@ class PomodoroTimerWidget extends StatelessWidget {
       children: [
         Text(
           '25:00',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'monospace', color: Colors.grey.shade400),
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'monospace',
+            color: Colors.grey.shade400,
+          ),
         ),
         const SizedBox(height: 2),
-        Text('Pronto para começar', style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+        Text(
+          'Pronto para começar',
+          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+        ),
       ],
     );
   }
@@ -158,10 +181,17 @@ class PomodoroTimerWidget extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(color: statusColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(
+        color: statusColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Text(
         statusText,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: statusColor),
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: statusColor,
+        ),
       ),
     );
   }
@@ -194,7 +224,11 @@ class _CircularProgressPainter extends CustomPainter {
   final Color color;
   final double strokeWidth;
 
-  _CircularProgressPainter({required this.progress, required this.color, required this.strokeWidth});
+  _CircularProgressPainter({
+    required this.progress,
+    required this.color,
+    required this.strokeWidth,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -210,7 +244,13 @@ class _CircularProgressPainter extends CustomPainter {
     const startAngle = -pi / 2; // Start from top
     final sweepAngle = 2 * pi * progress;
 
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle, sweepAngle, false, paint);
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      startAngle,
+      sweepAngle,
+      false,
+      paint,
+    );
   }
 
   @override

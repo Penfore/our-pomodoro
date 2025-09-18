@@ -5,13 +5,16 @@ import '../../../../core/utils/result.dart';
 import '../entities/pomodoro_session.dart';
 import '../repositories/pomodoro_repository.dart';
 
-class UpdatePomodoroSession implements UseCase<PomodoroSession, UpdatePomodoroSessionParams> {
+class UpdatePomodoroSession
+    implements UseCase<PomodoroSession, UpdatePomodoroSessionParams> {
   final PomodoroRepository repository;
 
   UpdatePomodoroSession(this.repository);
 
   @override
-  Future<Result<PomodoroSession>> call(UpdatePomodoroSessionParams params) async {
+  Future<Result<PomodoroSession>> call(
+    UpdatePomodoroSessionParams params,
+  ) async {
     return await repository.updateSession(params.session);
   }
 }
