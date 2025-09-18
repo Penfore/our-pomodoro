@@ -159,7 +159,7 @@ extension ResultExtensions<T> on Result<T> {
     };
   }
 
-  /// Converts to Future<Result<T>> for async chaining
+  /// Converts to Future&lt;Result&lt;T&gt;&gt; for async chaining
   Future<Result<R>> flatMapAsync<R>(
     Future<Result<R>> Function(T value) mapper,
   ) async {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:our_pomodoro/core/utils/dialog_utils.dart';
 
+import '../../../../core/utils/dialog_utils.dart';
 import '../bloc/pomodoro_bloc.dart';
 import '../bloc/pomodoro_event.dart';
 import '../bloc/pomodoro_state.dart';

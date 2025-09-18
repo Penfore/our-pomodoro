@@ -11,9 +11,9 @@ void main() {
       const cyclesBeforeLongBreak = 4;
 
       // Total time for one complete cycle (4 work + 3 short breaks + 1 long break)
-      final totalCycleTime = 
-          (workDuration * cyclesBeforeLongBreak) + 
-          (shortBreakDuration * (cyclesBeforeLongBreak - 1)) + 
+      const totalCycleTime =
+          (workDuration * cyclesBeforeLongBreak) +
+          (shortBreakDuration * (cyclesBeforeLongBreak - 1)) +
           longBreakDuration;
 
       expect(totalCycleTime, 130); // 100 + 15 + 15 = 130 minutes
@@ -21,12 +21,13 @@ void main() {
 
     test('Session types should alternate correctly in a cycle', () {
       final sessionTypes = <PomodoroType>[];
-      
+
       // Simulate a complete Pomodoro cycle
       for (int i = 1; i <= 7; i++) {
         if (i.isOdd) {
           sessionTypes.add(PomodoroType.work);
-        } else if (i == 8) { // After 4th work session
+        } else if (i == 8) {
+          // After 4th work session
           sessionTypes.add(PomodoroType.longBreak);
         } else {
           sessionTypes.add(PomodoroType.shortBreak);
@@ -46,12 +47,12 @@ void main() {
 
     test('Timer countdown should decrease correctly', () {
       int initialSeconds = 1500; // 25 minutes
-      
+
       // Simulate 1 minute of countdown
       for (int i = 0; i < 60; i++) {
         initialSeconds--;
       }
-      
+
       expect(initialSeconds, 1440); // Should be 24 minutes remaining
     });
 
@@ -74,7 +75,7 @@ void main() {
 
     test('Pause and resume should maintain remaining time', () {
       const initialRemainingTime = 900; // 15 minutes
-      
+
       final runningSession = PomodoroSession(
         id: 'pause-test',
         type: PomodoroType.work,
@@ -135,10 +136,10 @@ void main() {
 
       expect(workSession.durationMinutes, 25);
       expect(workSession.remainingSeconds, 1500);
-      
+
       expect(shortBreakSession.durationMinutes, 5);
       expect(shortBreakSession.remainingSeconds, 300);
-      
+
       expect(longBreakSession.durationMinutes, 15);
       expect(longBreakSession.remainingSeconds, 900);
     });
@@ -169,7 +170,10 @@ void main() {
       final copiedSession = session1.copyWith(remainingSeconds: 1400);
 
       expect(session1.id, isNot(equals(session2.id)));
-      expect(session1.id, equals(copiedSession.id)); // ID should persist in copyWith
+      expect(
+        session1.id,
+        equals(copiedSession.id),
+      ); // ID should persist in copyWith
     });
 
     test('Session progress calculation should be accurate', () {
@@ -265,7 +269,10 @@ void main() {
       final progressPercentage = (progress * 100).round();
 
       expect(progressPercentage, 75); // 75% complete
-      expect(session.currentSession / session.totalSessions, 0.75); // 75% through total sessions
+      expect(
+        session.currentSession / session.totalSessions,
+        0.75,
+      ); // 75% through total sessions
     });
   });
 }
