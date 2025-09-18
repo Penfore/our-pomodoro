@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:our_pomodoro/core/utils/dialog_utils.dart';
 
 import '../bloc/pomodoro_bloc.dart';
 import '../bloc/pomodoro_event.dart';
@@ -73,7 +74,7 @@ class TimerControlsWidget extends StatelessWidget {
         Flexible(
           child: ElevatedButton.icon(
             onPressed: () {
-              _showResetConfirmation(context);
+              DialogUtils.showResetConfirmation(context);
             },
             icon: const Icon(Icons.refresh),
             label: const Text('Resetar'),
@@ -81,7 +82,6 @@ class TimerControlsWidget extends StatelessWidget {
               backgroundColor: Colors.grey.shade400,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
             ),
           ),
         ),
@@ -114,7 +114,7 @@ class TimerControlsWidget extends StatelessWidget {
         Flexible(
           child: ElevatedButton.icon(
             onPressed: () {
-              _showResetConfirmation(context);
+              DialogUtils.showResetConfirmation(context);
             },
             icon: const Icon(Icons.refresh),
             label: const Text('Resetar'),
@@ -176,29 +176,6 @@ class TimerControlsWidget extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  void _showResetConfirmation(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Resetar Timer'),
-          content: const Text('Tem certeza que deseja resetar o timer? Todo o progresso será perdido.'),
-          actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancelar')),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                context.read<PomodoroBloc>().add(ResetPomodoroEvent());
-              },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade400, foregroundColor: Colors.white),
-              child: const Text('Resetar'),
-            ),
-          ],
-        );
-      },
     );
   }
 }
