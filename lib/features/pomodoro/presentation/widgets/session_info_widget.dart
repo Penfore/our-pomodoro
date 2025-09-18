@@ -127,16 +127,19 @@ class SessionInfoWidget extends StatelessWidget {
   }
 
   Widget _buildSessionDot(int index, int currentSession, int totalSessions) {
-    final isActive = index < currentSession;
-    final isCurrent = index == currentSession - 1;
+    final workSessionsCompleted = (currentSession - 1).clamp(0, totalSessions);
+
+    final isCompleted = index < workSessionsCompleted;
+    final isCurrent =
+        index == workSessionsCompleted && workSessionsCompleted < totalSessions;
 
     Color dotColor;
-    if (isActive && !isCurrent) {
-      dotColor = Colors.green.shade400; // Completed sessions
+    if (isCompleted) {
+      dotColor = Colors.green.shade400;
     } else if (isCurrent) {
-      dotColor = Colors.blue.shade400; // Current session
+      dotColor = Colors.blue.shade400;
     } else {
-      dotColor = Colors.grey.shade300; // Future sessions
+      dotColor = Colors.grey.shade300;
     }
 
     return Container(

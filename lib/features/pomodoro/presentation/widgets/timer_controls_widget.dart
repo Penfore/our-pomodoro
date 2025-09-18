@@ -50,40 +50,73 @@ class TimerControlsWidget extends StatelessWidget {
   }
 
   Widget _buildRunningControls(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Column(
       children: [
-        // Pause button
-        Flexible(
-          child: ElevatedButton.icon(
-            onPressed: () {
-              context.read<PomodoroBloc>().add(PausePomodoroEvent());
-            },
-            icon: const Icon(Icons.pause),
-            label: const Text('Pausar'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange.shade400,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // Pause button
+            Flexible(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  context.read<PomodoroBloc>().add(PausePomodoroEvent());
+                },
+                icon: const Icon(Icons.pause),
+                label: const Text('Pausar'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange.shade400,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
               ),
             ),
-          ),
+            const SizedBox(width: 12),
+            // Reset button
+            Flexible(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  DialogUtils.showResetConfirmation(context);
+                },
+                icon: const Icon(Icons.refresh),
+                label: const Text('Resetar'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.grey.shade400,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(width: 16),
-        // Reset button
-        Flexible(
-          child: ElevatedButton.icon(
-            onPressed: () {
-              DialogUtils.showResetConfirmation(context);
-            },
-            icon: const Icon(Icons.refresh),
-            label: const Text('Resetar'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey.shade400,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        const SizedBox(height: 12),
+        // Skip button
+        SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: ElevatedButton.icon(
+              onPressed: () {
+                DialogUtils.showSkipConfirmation(context);
+              },
+              icon: const Icon(Icons.skip_next),
+              label: const Text('Pular Sessão'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple.shade400,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
             ),
           ),
         ),
@@ -92,42 +125,75 @@ class TimerControlsWidget extends StatelessWidget {
   }
 
   Widget _buildPausedControls(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Column(
       children: [
-        // Resume button
-        Flexible(
-          child: ElevatedButton.icon(
-            onPressed: () {
-              context.read<PomodoroBloc>().add(ResumePomodoroEvent());
-            },
-            icon: const Icon(Icons.play_arrow),
-            label: const Text('Continuar'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green.shade400,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // Resume button
+            Flexible(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  context.read<PomodoroBloc>().add(ResumePomodoroEvent());
+                },
+                icon: const Icon(Icons.play_arrow),
+                label: const Text('Continuar'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green.shade400,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
               ),
             ),
-          ),
+            const SizedBox(width: 12),
+            // Reset button
+            Flexible(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  DialogUtils.showResetConfirmation(context);
+                },
+                icon: const Icon(Icons.refresh),
+                label: const Text('Resetar'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.grey.shade400,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(width: 16),
-        // Reset button
-        Flexible(
-          child: ElevatedButton.icon(
-            onPressed: () {
-              DialogUtils.showResetConfirmation(context);
-            },
-            icon: const Icon(Icons.refresh),
-            label: const Text('Resetar'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey.shade400,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
+        const SizedBox(height: 12),
+        // Skip button
+        SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: ElevatedButton.icon(
+              onPressed: () {
+                DialogUtils.showSkipConfirmation(context);
+              },
+              icon: const Icon(Icons.skip_next),
+              label: const Text('Pular Sessão'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple.shade400,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
               ),
             ),
           ),
