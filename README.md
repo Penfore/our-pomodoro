@@ -3,7 +3,7 @@
 <div align="center">
   <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter" />
   <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart" />
-  <img src="https://img.shields.io/badge/version-0.1.0-blue?style=for-the-badge" alt="Version" />
+  <img src="https://img.shields.io/badge/version-0.2.0-blue?style=for-the-badge" alt="Version" />
   <img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License" />
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge" alt="PRs Welcome" />
 </div>
@@ -21,19 +21,25 @@
 
 ---
 
-## ✨ Planned Features
+## ✨ Features
 
-> **Note**: This project is in early development (v0.1.0). Currently only the Clean Architecture foundation is implemented.
+### 🎯 **Current Features (v0.2.0)**
+- 🍅 **Complete Pomodoro Timer** - Full timer functionality with start/pause/resume/reset ✅
+- ⏭️ **Skip Session** - Skip current session and auto-start next one ✅
+- 🔄 **Auto Transitions** - Seamless flow between work and break sessions ✅
+- 📊 **Session Progress** - Real-time counter and visual progress indicators ✅
+- 🎛️ **Smart Controls** - Context-aware controls that adapt to session state ✅
+- � **Session Persistence** - Resume your session after app restart ✅
+- 🏗️ **Clean Architecture** - Maintainable, testable, and scalable codebase ✅
+- 🧪 **Comprehensive Testing** - 46 automated tests ensuring reliability ✅
 
 ### 🚧 **In Development**
-- 🏗️ **Clean Architecture** - Maintainable, testable, and scalable codebase ✅
 - 📦 **Dependency Injection** - GetIt setup with manual configuration ✅
 - 🏛️ **Domain Layer** - Entities, repositories, and use cases ✅
 - 💾 **Data Layer** - Local storage with SharedPreferences ✅
 - 🎛️ **State Management** - BLoC pattern implementation ✅
 
 ### 📋 **Planned Features**
-- 🍅 **Classic Pomodoro Timer** - 25min work, 5min break, 15min long break
 - ⚙️ **Customizable Settings** - Adjust timer durations to your preference
 - 📊 **Productivity Statistics** - Track your focus sessions and streaks
 - 🔔 **Smart Notifications** - Get notified when sessions complete
@@ -44,7 +50,47 @@
 
 ## 📱 Screenshots
 
-*Screenshots will be added as features are implemented. Currently showing basic app structure (v0.1.0)*
+### 🎯 Timer Interface (v0.2.0)
+
+<div align="center">
+
+| Initial State | Work Session | Short Break | Session Complete |
+|:-------------:|:------------:|:-----------:|:----------------:|
+| ![Initial State](images/initial-state.png) | ![Work Session](images/work.png) | ![Short Break](images/short-pause.png) | ![Session Complete](images/completed-session.png) |
+| Ready to start your first Pomodoro session | 25-minute focus timer with progress tracking | 5-minute break with relaxing interface | Session completed with next action options |
+
+</div>
+
+> 💡 **What the screenshots show**: From left to right, you can see the complete user journey - starting fresh, focusing during work time, taking a well-deserved break, and celebrating completion before moving to the next session. Notice how the interface adapts with different colors, buttons, and messages for each state.
+
+### ✨ **Interface Highlights**
+
+- **� Clean, Distraction-Free Design** - Minimalist interface that keeps you focused
+- **⏰ Circular Progress Timer** - Visual countdown with smooth animations
+- **📊 Session Progress Tracking** - Dots showing your progress through the 4-session cycle
+- **🎛️ Smart Control Buttons** - Context-aware controls (Start/Pause/Skip/Reset)
+- **🔄 Seamless Transitions** - Automatic flow between work sessions and breaks
+- **📱 Responsive Design** - Looks great on phones and tablets
+
+### 🎨 **Visual Features**
+- **Material Design 3** components with modern styling
+- **Intuitive Color Coding** - Different colors for work (red) and break (green/blue) sessions
+- **Real-time Updates** - Session counter and timer update smoothly
+- **Confirmation Dialogs** - Prevents accidental actions with user-friendly prompts
+
+### 🔄 **Complete Pomodoro Flow Demo**
+
+Our Pomodoro follows the classic Pomodoro Technique with intelligent automation:
+
+1. **🚀 Start** → Choose work session from floating buttons
+2. **⏰ Focus** → 25-minute timer with progress visualization
+3. **✅ Complete** → Automatic transition to 5-minute break
+4. **☕ Break** → Relax while the break timer counts down
+5. **🔄 Repeat** → Automatic cycle progression (4 work sessions + breaks)
+6. **🎯 Long Break** → 15-minute break after completing 4 work sessions
+7. **🏁 Finish** → Complete cycle with option to start fresh
+
+**⏭️ Skip Feature**: Need to move on? Skip any session instantly with the purple "Skip Session" button!
 
 ## 🚀 Getting Started
 
@@ -152,23 +198,26 @@ open coverage/html/index.html
 
 ## 📋 Development Roadmap
 
-### Phase 1: Core Features ✅
+### Phase 1: Core Foundation ✅
 - [x] Clean Architecture setup
 - [x] Dependency injection
 - [x] Basic BLoC structure
 - [x] Data models and entities
 
-### Phase 2: Timer Implementation 🚧
-- [ ] Timer functionality (start/pause/reset)
-- [ ] Session transitions
-- [ ] Sound notifications
-- [ ] Local notifications
+### Phase 2: Timer Implementation ✅
+- [x] Timer functionality (start/pause/resume/reset)
+- [x] Session transitions and automatic flow
+- [x] Skip session functionality
+- [x] Session progress tracking and visual indicators
+- [x] Circular progress timer with responsive design
+- [x] Session state persistence
 
-### Phase 3: UI/UX 📝
-- [ ] Modern, intuitive UI design
+### Phase 3: UI/UX �
+- [x] Modern, intuitive timer interface
+- [x] Material Design 3 components
 - [ ] Smooth animations
-- [ ] Dark/Light theme
-- [ ] Responsive design
+- [ ] Dark/Light theme switching
+- [ ] Responsive design improvements
 
 ### Phase 4: Advanced Features 📝
 - [ ] Statistics dashboard

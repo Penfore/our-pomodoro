@@ -8,12 +8,68 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Timer functionality (start/pause/reset)
 - UI implementation
 - Settings screen
 - Statistics dashboard
 - Notifications system
 - Sound alerts
+
+## [0.2.0] - 2025-09-18
+
+### Added
+- 🍅 **Complete Pomodoro Timer Functionality**
+  - Start, pause, resume, and reset timer operations
+  - Work sessions (25 minutes), short breaks (5 minutes), long breaks (15 minutes)
+  - Automatic session transitions with 2-second delay
+  - Visual circular progress indicator with responsive design
+
+- ⏭️ **Skip Session Feature**
+  - Skip current session (work or break) with confirmation dialog
+  - Automatic transition to next appropriate session type
+  - Intelligent cycle management and completion detection
+
+- 📊 **Session Progress Tracking**
+  - Real-time session counter ("Session X of Y")
+  - Visual progress dots showing completed/current/future work sessions
+  - Smart session numbering that tracks work sessions specifically
+
+- 🎯 **Advanced Session Management**
+  - Automatic Pomodoro cycle progression (4 work sessions + breaks + long break)
+  - Session state persistence using SharedPreferences
+  - Proper cycle completion and reset functionality
+
+- 🏗️ **Enhanced Architecture**
+  - SessionHelpers utility class for session logic
+  - Improved BLoC event handling for skip and completion
+  - Better separation of concerns for session transitions
+
+- 🧪 **Comprehensive Testing**
+  - 46 automated tests covering all functionality
+  - Unit tests for session helpers and business logic
+  - BLoC testing for state management
+  - Skip session functionality testing
+
+### Changed
+- 🔄 **Improved Timer Controls UI**
+  - Redesigned control layout with skip button
+  - Better responsive design for different screen sizes
+  - Enhanced button styling with consistent Material Design
+
+- 💫 **Better User Experience**
+  - Instant transition when skipping sessions
+  - Confirmation dialogs for destructive actions
+  - Clear visual feedback for session progress
+  - Automatic flow reduces manual intervention
+
+- 📚 **Enhanced Documentation**
+  - Complete visual documentation with screenshots
+  - Updated README with current feature showcase
+  - Comprehensive release notes and changelog### Technical Details
+- Advanced session state management with automatic transitions
+- Robust error handling and edge case management
+- Timer precision with proper resource cleanup
+- Memory leak prevention with proper disposal patterns
+- Type-safe session helpers with comprehensive validation
 
 ## [0.1.0] - 2025-09-06
 
