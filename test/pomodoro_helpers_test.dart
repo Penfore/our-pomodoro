@@ -4,7 +4,10 @@ import 'package:our_pomodoro/features/pomodoro/domain/entities/pomodoro_session.
 void main() {
   group('Pomodoro Helper Functions Tests', () {
     test('Should determine next session type correctly', () {
-      PomodoroType getNextSessionType(int currentSession, PomodoroType currentType) {
+      PomodoroType getNextSessionType(
+        int currentSession,
+        PomodoroType currentType,
+      ) {
         if (currentType == PomodoroType.work) {
           if (currentSession == 4) {
             return PomodoroType.longBreak;
@@ -42,10 +45,10 @@ void main() {
     test('Should format remaining time with proper units', () {
       String formatRemainingTime(int seconds) {
         if (seconds <= 0) return 'Concluído';
-        
+
         final minutes = seconds ~/ 60;
         final remainingSeconds = seconds % 60;
-        
+
         if (minutes > 0 && remainingSeconds > 0) {
           return '${minutes}m ${remainingSeconds}s restantes';
         } else if (minutes > 0) {
@@ -64,8 +67,8 @@ void main() {
 
     test('Should validate session completion correctly', () {
       bool isSessionCompleted(PomodoroSession session) {
-        return session.remainingSeconds <= 0 || 
-               session.status == PomodoroStatus.completed;
+        return session.remainingSeconds <= 0 ||
+            session.status == PomodoroStatus.completed;
       }
 
       final completedSession = PomodoroSession(
@@ -120,7 +123,7 @@ void main() {
     test('Should determine if session needs notification', () {
       bool shouldNotify(PomodoroSession session, int notificationThreshold) {
         return session.remainingSeconds == notificationThreshold &&
-               session.status == PomodoroStatus.running;
+            session.status == PomodoroStatus.running;
       }
 
       final session = PomodoroSession(
@@ -135,7 +138,10 @@ void main() {
       );
 
       expect(shouldNotify(session, 60), true); // Should notify at 1 minute
-      expect(shouldNotify(session, 30), false); // Shouldn't notify at 30 seconds
+      expect(
+        shouldNotify(session, 30),
+        false,
+      ); // Shouldn't notify at 30 seconds
     });
 
     test('Should generate unique session IDs', () {
@@ -152,7 +158,9 @@ void main() {
     });
 
     test('Should calculate productivity statistics', () {
-      Map<String, dynamic> calculateStats(List<PomodoroSession> completedSessions) {
+      Map<String, dynamic> calculateStats(
+        List<PomodoroSession> completedSessions,
+      ) {
         int totalWorkSessions = 0;
         int totalBreakSessions = 0;
         int totalWorkMinutes = 0;
@@ -215,7 +223,7 @@ void main() {
     test('Should handle session state transitions', () {
       String getActionButtonText(PomodoroSession? session) {
         if (session == null) return 'Iniciar Pomodoro';
-        
+
         switch (session.status) {
           case PomodoroStatus.initial:
             return 'Iniciar';
@@ -229,7 +237,7 @@ void main() {
       }
 
       expect(getActionButtonText(null), 'Iniciar Pomodoro');
-      
+
       final initialSession = PomodoroSession(
         id: 'initial',
         type: PomodoroType.work,
@@ -242,19 +250,34 @@ void main() {
       );
 
       expect(getActionButtonText(initialSession), 'Iniciar');
-      expect(getActionButtonText(initialSession.copyWith(status: PomodoroStatus.running)), 'Pausar');
-      expect(getActionButtonText(initialSession.copyWith(status: PomodoroStatus.paused)), 'Retomar');
-      expect(getActionButtonText(initialSession.copyWith(status: PomodoroStatus.completed)), 'Próxima Sessão');
+      expect(
+        getActionButtonText(
+          initialSession.copyWith(status: PomodoroStatus.running),
+        ),
+        'Pausar',
+      );
+      expect(
+        getActionButtonText(
+          initialSession.copyWith(status: PomodoroStatus.paused),
+        ),
+        'Retomar',
+      );
+      expect(
+        getActionButtonText(
+          initialSession.copyWith(status: PomodoroStatus.completed),
+        ),
+        'Próxima Sessão',
+      );
     });
 
     test('Should validate session data integrity', () {
       bool isValidSession(PomodoroSession session) {
         return session.id.isNotEmpty &&
-               session.durationMinutes > 0 &&
-               session.remainingSeconds >= 0 &&
-               session.currentSession > 0 &&
-               session.currentSession <= session.totalSessions &&
-               session.totalSessions > 0;
+            session.durationMinutes > 0 &&
+            session.remainingSeconds >= 0 &&
+            session.currentSession > 0 &&
+            session.currentSession <= session.totalSessions &&
+            session.totalSessions > 0;
       }
 
       final validSession = PomodoroSession(
@@ -273,9 +296,17 @@ void main() {
       // Test invalid scenarios
       expect(isValidSession(validSession.copyWith(id: '')), false);
       expect(isValidSession(validSession.copyWith(durationMinutes: 0)), false);
-      expect(isValidSession(validSession.copyWith(remainingSeconds: -1)), false);
+      expect(
+        isValidSession(validSession.copyWith(remainingSeconds: -1)),
+        false,
+      );
       expect(isValidSession(validSession.copyWith(currentSession: 0)), false);
-      expect(isValidSession(validSession.copyWith(currentSession: 5, totalSessions: 4)), false);
+      expect(
+        isValidSession(
+          validSession.copyWith(currentSession: 5, totalSessions: 4),
+        ),
+        false,
+      );
     });
   });
 }

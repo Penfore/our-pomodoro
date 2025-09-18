@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:our_pomodoro/features/pomodoro/domain/entities/pomodoro_session.dart';
+import 'package:our_pomodoro/features/pomodoro/domain/helpers/session_helpers.dart';
 
 void main() {
   group('Pomodoro Business Logic Tests', () {
@@ -273,6 +274,111 @@ void main() {
         session.currentSession / session.totalSessions,
         0.75,
       ); // 75% through total sessions
+    });
+
+    test('Skip session should mark session as completed', () {
+      // Create a running session
+      final runningSession = PomodoroSession(
+        id: 'test-id',
+        type: PomodoroType.work,
+        durationMinutes: 25,
+        remainingSeconds: 900, // 15 minutes remaining
+        status: PomodoroStatus.running,
+        startedAt: DateTime.now(),
+        currentSession: 1,
+        totalSessions: 4,
+      );
+
+      // Simulate skipping the session
+      final skippedSession = runningSession.copyWith(
+        status: PomodoroStatus.completed,
+        remainingSeconds: 0,
+        completedAt: DateTime.now(),
+      );
+
+      expect(skippedSession.status, PomodoroStatus.completed);
+      expect(skippedSession.remainingSeconds, 0);
+      expect(skippedSession.completedAt, isNotNull);
+      expect(skippedSession.type, PomodoroType.work); // Original type preserved
+      expect(skippedSession.durationMinutes, 25); // Original duration preserved
+    });
+
+    test('Skip paused session should work correctly', () {
+      // Create a paused session
+      final pausedSession = PomodoroSession(
+        id: 'test-id',
+        type: PomodoroType.shortBreak,
+        durationMinutes: 5,
+        remainingSeconds: 180, // 3 minutes remaining
+        status: PomodoroStatus.paused,
+        startedAt: DateTime.now(),
+        currentSession: 2,
+        totalSessions: 4,
+      );
+
+      // Simulate skipping the paused session
+      final skippedSession = pausedSession.copyWith(
+        status: PomodoroStatus.completed,
+        remainingSeconds: 0,
+        completedAt: DateTime.now(),
+      );
+
+      expect(skippedSession.status, PomodoroStatus.completed);
+      expect(skippedSession.remainingSeconds, 0);
+      expect(skippedSession.completedAt, isNotNull);
+      expect(skippedSession.type, PomodoroType.shortBreak);
+    });
+
+    test('Session helpers should calculate next session type correctly', () {
+      expect(
+        SessionHelpers.getNextSessionType(1, PomodoroType.work),
+        PomodoroType.shortBreak,
+      );
+      expect(
+        SessionHelpers.getNextSessionType(2, PomodoroType.work),
+        PomodoroType.shortBreak,
+      );
+      expect(
+        SessionHelpers.getNextSessionType(4, PomodoroType.work),
+        PomodoroType.longBreak,
+      );
+
+      expect(
+        SessionHelpers.getNextSessionType(1, PomodoroType.shortBreak),
+        PomodoroType.work,
+      );
+      expect(
+        SessionHelpers.getNextSessionType(4, PomodoroType.longBreak),
+        PomodoroType.work,
+      );
+    });
+
+    test('Session helpers should calculate next session number correctly', () {
+      expect(SessionHelpers.getNextSessionNumber(1, PomodoroType.work, 4), 1);
+      expect(SessionHelpers.getNextSessionNumber(2, PomodoroType.work, 4), 2);
+      expect(SessionHelpers.getNextSessionNumber(4, PomodoroType.work, 4), 4);
+
+      expect(
+        SessionHelpers.getNextSessionNumber(1, PomodoroType.shortBreak, 4),
+        2,
+      );
+      expect(
+        SessionHelpers.getNextSessionNumber(2, PomodoroType.shortBreak, 4),
+        3,
+      );
+      expect(
+        SessionHelpers.getNextSessionNumber(4, PomodoroType.longBreak, 4),
+        5,
+      );
+    });
+
+    test('Session helpers should detect cycle end correctly', () {
+      expect(SessionHelpers.shouldEndCycle(4, PomodoroType.longBreak, 4), true);
+      expect(SessionHelpers.shouldEndCycle(4, PomodoroType.work, 4), false);
+      expect(
+        SessionHelpers.shouldEndCycle(2, PomodoroType.shortBreak, 4),
+        false,
+      );
     });
   });
 }
