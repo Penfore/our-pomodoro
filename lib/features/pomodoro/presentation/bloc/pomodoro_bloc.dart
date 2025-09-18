@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../../../../core/utils/result.dart';
 import '../../domain/entities/pomodoro_session.dart';
+import '../../domain/helpers/session_helpers.dart';
 import '../../domain/usecases/clear_current_session.dart';
 import '../../domain/usecases/get_current_session.dart';
 import '../../domain/usecases/start_pomodoro_session.dart';
@@ -31,6 +32,7 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
     on<PausePomodoroEvent>(_onPausePomodoro);
     on<ResumePomodoroEvent>(_onResumePomodoro);
     on<ResetPomodoroEvent>(_onResetPomodoro);
+    on<SkipPomodoroEvent>(_onSkipPomodoro);
     on<TickPomodoroEvent>(_onTickPomodoro);
     on<CompletePomodoroEvent>(_onCompletePomodoro);
     on<LoadCurrentSessionEvent>(_onLoadCurrentSession);
@@ -127,6 +129,70 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
     emit(PomodoroInitial());
   }
 
+  Future<void> _onSkipPomodoro(
+    SkipPomodoroEvent event,
+    Emitter<PomodoroState> emit,
+  ) async {
+    if (_currentSession != null) {
+      _stopTimer();
+
+      // Mark current session as completed and skipped
+      _currentSession = _currentSession!.copyWith(
+        status: PomodoroStatus.completed,
+        remainingSeconds: 0,
+        completedAt: DateTime.now(),
+      );
+
+      await _updateSessionInRepository();
+
+      final nextSessionType = SessionHelpers.getNextSessionType(
+        _currentSession!.currentSession,
+        _currentSession!.type,
+      );
+      final nextSessionNumber = SessionHelpers.getNextSessionNumber(
+        _currentSession!.currentSession,
+        _currentSession!.type,
+        _currentSession!.totalSessions,
+      );
+
+      if (SessionHelpers.shouldEndCycle(
+        _currentSession!.currentSession,
+        _currentSession!.type,
+        _currentSession!.totalSessions,
+      )) {
+        emit(PomodoroCompleted(session: _currentSession!));
+        await clearCurrentSession(NoParams());
+        _currentSession = null;
+        return;
+      }
+
+      if (nextSessionNumber > _currentSession!.totalSessions) {
+        emit(PomodoroCompleted(session: _currentSession!));
+        await clearCurrentSession(NoParams());
+        _currentSession = null;
+        return;
+      }
+
+      final result = await startPomodoroSession(
+        StartPomodoroSessionParams(
+          type: nextSessionType,
+          currentSession: nextSessionNumber,
+        ),
+      );
+
+      result.fold(
+        (failure) =>
+            emit(PomodoroError(message: _mapFailureToMessage(failure))),
+        (session) {
+          _currentSession = session.copyWith(status: PomodoroStatus.running);
+          emit(PomodoroRunning(session: _currentSession!));
+          _startTimer();
+          _updateSessionInRepository();
+        },
+      );
+    }
+  }
+
   Future<void> _onTickPomodoro(
     TickPomodoroEvent event,
     Emitter<PomodoroState> emit,
@@ -137,13 +203,8 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
       );
 
       if (event.remainingSeconds <= 0) {
-        _stopTimer();
-        _currentSession = _currentSession!.copyWith(
-          status: PomodoroStatus.completed,
-          remainingSeconds: 0,
-          completedAt: DateTime.now(),
-        );
-        emit(PomodoroCompleted(session: _currentSession!));
+        add(CompletePomodoroEvent());
+        return;
       } else {
         emit(PomodoroRunning(session: _currentSession!));
       }
@@ -163,8 +224,58 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
         remainingSeconds: 0,
         completedAt: DateTime.now(),
       );
-      emit(PomodoroCompleted(session: _currentSession!));
+
       await _updateSessionInRepository();
+
+      final nextSessionType = SessionHelpers.getNextSessionType(
+        _currentSession!.currentSession,
+        _currentSession!.type,
+      );
+      final nextSessionNumber = SessionHelpers.getNextSessionNumber(
+        _currentSession!.currentSession,
+        _currentSession!.type,
+        _currentSession!.totalSessions,
+      );
+
+      if (SessionHelpers.shouldEndCycle(
+        _currentSession!.currentSession,
+        _currentSession!.type,
+        _currentSession!.totalSessions,
+      )) {
+        emit(PomodoroCompleted(session: _currentSession!));
+        await clearCurrentSession(NoParams());
+        _currentSession = null;
+        return;
+      }
+
+      if (nextSessionNumber > _currentSession!.totalSessions) {
+        emit(PomodoroCompleted(session: _currentSession!));
+        await clearCurrentSession(NoParams());
+        _currentSession = null;
+        return;
+      }
+
+      emit(PomodoroCompleted(session: _currentSession!));
+
+      await Future<void>.delayed(const Duration(seconds: 1));
+
+      final result = await startPomodoroSession(
+        StartPomodoroSessionParams(
+          type: nextSessionType,
+          currentSession: nextSessionNumber,
+        ),
+      );
+
+      result.fold(
+        (failure) =>
+            emit(PomodoroError(message: _mapFailureToMessage(failure))),
+        (session) {
+          _currentSession = session.copyWith(status: PomodoroStatus.running);
+          emit(PomodoroRunning(session: _currentSession!));
+          _startTimer();
+          _updateSessionInRepository();
+        },
+      );
     }
   }
 

@@ -25,6 +25,8 @@ class ResumePomodoroEvent extends PomodoroEvent {}
 
 class ResetPomodoroEvent extends PomodoroEvent {}
 
+class SkipPomodoroEvent extends PomodoroEvent {}
+
 class TickPomodoroEvent extends PomodoroEvent {
   final int remainingSeconds;
 
