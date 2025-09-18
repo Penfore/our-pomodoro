@@ -9,6 +9,12 @@
 </div>
 
 <div align="center">
+  <img src="https://img.shields.io/github/stars/Penfore/our-pomodoro?style=social" alt="GitHub stars" />
+  <img src="https://img.shields.io/github/forks/Penfore/our-pomodoro?style=social" alt="GitHub forks" />
+  <img src="https://img.shields.io/github/watchers/Penfore/our-pomodoro?style=social" alt="GitHub watchers" />
+</div>
+
+<div align="center">
   <h3>🎯 Maximize your productivity with the Pomodoro Technique</h3>
   <p>A beautiful, clean, and efficient Pomodoro Timer app built with Flutter following Clean Architecture principles.</p>
 </div>
@@ -56,8 +62,8 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/our_pomodoro.git
-   cd our_pomodoro
+   git clone https://github.com/Penfore/our-pomodoro.git
+   cd our-pomodoro
    ```
 
 2. **Install dependencies**
@@ -243,12 +249,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **[Fúlvio Leo]** - *Initial work* - [@Penfore](https://github.com/Penfore)
 
-See also the list of [contributors](https://github.com/Penfore/our_pomodoro/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/Penfore/our-pomodoro/contributors) who participated in this project.
 
 ## 📞 Support & Community
 
-- 🐛 **Issues**: [GitHub Issues](https://github.com/Penfore/our_pomodoro/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/Penfore/our_pomodoro/discussions)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/Penfore/our-pomodoro/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/Penfore/our-pomodoro/discussions)
 - 📧 **Email**: fulvioleo.dev@pm.me
 
 ## 🙏 Acknowledgments
@@ -256,15 +262,17 @@ See also the list of [contributors](https://github.com/Penfore/our_pomodoro/cont
 - Inspired by the [Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) by Francesco Cirillo
 - Built with [Flutter](https://flutter.dev/) by Google
 - Icons provided by [Flutter Icons](https://flutter.dev/docs/development/ui/widgets/icon)
-- Thanks to all [contributors](https://github.com/Penfore/our_pomodoro/contributors)
+- Thanks to all [contributors](https://github.com/Penfore/our-pomodoro/contributors)
 
 ## 📈 Project Stats
 
 <div align="center">
-  <img src="https://img.shields.io/github/stars/yourusername/our_pomodoro?style=social" alt="GitHub stars" />
-  <img src="https://img.shields.io/github/forks/yourusername/our_pomodoro?style=social" alt="GitHub forks" />
-  <img src="https://img.shields.io/github/issues/yourusername/our_pomodoro" alt="GitHub issues" />
-  <img src="https://img.shields.io/github/issues-pr/yourusername/our_pomodoro" alt="GitHub pull requests" />
+
+![GitHub Issues](https://img.shields.io/github/issues/Penfore/our-pomodoro?style=flat-square&color=red)
+![GitHub Pull Requests](https://img.shields.io/github/issues-pr/Penfore/our-pomodoro?style=flat-square&color=blue)
+![Last Commit](https://img.shields.io/github/last-commit/Penfore/our-pomodoro?style=flat-square&color=green)
+![Repo Size](https://img.shields.io/github/repo-size/Penfore/our-pomodoro?style=flat-square&color=orange)
+
 </div>
 
 ---
