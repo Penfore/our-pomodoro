@@ -15,15 +15,21 @@ class PomodoroTimerWidget extends StatelessWidget {
     return BlocBuilder<PomodoroBloc, PomodoroState>(
       builder: (context, state) {
         return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildTimerCircle(context, state),
-              const SizedBox(height: 24),
-              _buildTimerText(state),
-              const SizedBox(height: 12),
-              _buildStatusText(state),
-            ],
+          child: SizedBox(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildTimerCircle(context, state),
+                  const SizedBox(height: 24),
+                  _buildTimerText(state),
+                  const SizedBox(height: 20),
+                  _buildStatusText(state),
+                ],
+              ),
+            ),
           ),
         );
       },
@@ -31,7 +37,10 @@ class PomodoroTimerWidget extends StatelessWidget {
   }
 
   Widget _buildTimerCircle(BuildContext context, PomodoroState state) {
-    final size = MediaQuery.of(context).size.width * 0.6;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    final size = (screenWidth * 0.45).clamp(160.0, 200.0);
+
     double progress = 0.0;
     Color circleColor = Theme.of(context).primaryColor;
 
@@ -48,8 +57,6 @@ class PomodoroTimerWidget extends StatelessWidget {
         children: [
           // Background circle
           Container(
-            width: size,
-            height: size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: circleColor.withValues(alpha: 0.1),
@@ -59,7 +66,7 @@ class PomodoroTimerWidget extends StatelessWidget {
           // Progress circle
           CustomPaint(
             size: Size(size, size),
-            painter: _CircularProgressPainter(progress: progress, color: circleColor, strokeWidth: 8),
+            painter: _CircularProgressPainter(progress: progress, color: circleColor, strokeWidth: 6),
           ),
           // Timer display
           Center(child: _buildTimerDisplay(state)),
@@ -80,18 +87,18 @@ class PomodoroTimerWidget extends StatelessWidget {
         children: [
           Text(
             session.formattedTime,
-            style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 2),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
               color: _getColorForType(session.type).withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               _getTypeLabel(session.type),
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: _getColorForType(session.type)),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: _getColorForType(session.type)),
             ),
           ),
         ],
@@ -103,10 +110,10 @@ class PomodoroTimerWidget extends StatelessWidget {
       children: [
         Text(
           '25:00',
-          style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, fontFamily: 'monospace', color: Colors.grey.shade400),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'monospace', color: Colors.grey.shade400),
         ),
-        const SizedBox(height: 8),
-        Text('Pronto para começar', style: TextStyle(fontSize: 14, color: Colors.grey.shade600)),
+        const SizedBox(height: 2),
+        Text('Pronto para começar', style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
       ],
     );
   }
@@ -114,10 +121,15 @@ class PomodoroTimerWidget extends StatelessWidget {
   Widget _buildTimerText(PomodoroState state) {
     if (state is PomodoroCompleted) {
       final session = state.session;
-      return Text(
-        '🎉 ${_getTypeLabel(session.type)} Concluído!',
-        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        textAlign: TextAlign.center,
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Text(
+          '🎉 ${_getTypeLabel(session.type)} Concluído!',
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
       );
     }
 
