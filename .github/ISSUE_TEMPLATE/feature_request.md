@@ -42,9 +42,9 @@ How important is this feature to you?
 ## 📋 Additional Context
 Add any other context, screenshots, or examples about the feature request here.
 
-## 🤝 Implementation
-Are you willing to work on this feature?
-- [ ] Yes, I can work on this
-- [ ] Yes, with guidance
-- [ ] No, but I can test it
-- [ ] No
+## 🤝 Contribution (Optional)
+Your feature request is valuable regardless! If you're interested in contributing, let us know how:
+- [ ] I'd love to help implement this
+- [ ] I can help with guidance from maintainers
+- [ ] I can help with testing when it's ready
+- [ ] I prefer to just share the idea (and that's perfectly fine!)
