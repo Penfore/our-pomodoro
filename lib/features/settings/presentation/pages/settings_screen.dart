@@ -39,132 +39,145 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Áudio e Notificações',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    SwitchListTile(
-                      title: const Text('Alertas Sonoros'),
-                      subtitle: const Text(
-                        'Tocar som quando as sessões terminarem',
-                      ),
-                      value: _soundEnabled,
-                      onChanged: (value) {
-                        setState(() {
-                          _soundEnabled = value;
-                        });
-                        _audioService.setSoundEnabled(value);
-                      },
-                      secondary: const Icon(Icons.volume_up),
-                    ),
-                    if (_soundEnabled) ...[
-                      const Divider(),
-                      ListTile(
-                        leading: const Icon(Icons.volume_down),
-                        title: const Text('Volume'),
-                        subtitle: Slider(
-                          value: _volume,
-                          min: 0.0,
-                          max: 1.0,
-                          divisions: 10,
-                          label: '${(_volume * 100).round()}%',
-                          onChanged: (value) {
-                            setState(() {
-                              _volume = value;
-                            });
-                            _audioService.setVolume(value);
-                          },
-                        ),
-                        trailing: const Icon(Icons.volume_up),
-                      ),
-                      const Divider(),
-                      ListTile(
-                        leading: const Icon(Icons.play_circle_outline),
-                        title: const Text('Testar Som'),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Áudio e Notificações',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      SwitchListTile(
+                        title: const Text('Alertas Sonoros'),
                         subtitle: const Text(
-                          'Ouvir som de conclusão de sessão',
+                          'Tocar som quando as sessões terminarem',
                         ),
-                        onTap: () async {
-                          await _audioService.playSound(
-                            SoundType.sessionComplete,
-                          );
+                        value: _soundEnabled,
+                        onChanged: (value) {
+                          setState(() {
+                            _soundEnabled = value;
+                          });
+                          _audioService.setSoundEnabled(value);
                         },
-                        trailing: const Icon(Icons.chevron_right),
+                        secondary: const Icon(Icons.volume_up),
                       ),
+                      if (_soundEnabled) ...[
+                        const Divider(),
+                        ListTile(
+                          leading: const Icon(Icons.volume_down),
+                          title: const Text('Volume'),
+                          subtitle: Slider(
+                            value: _volume,
+                            min: 0.0,
+                            max: 1.0,
+                            divisions: 10,
+                            label: '${(_volume * 100).round()}%',
+                            onChanged: (value) {
+                              setState(() {
+                                _volume = value;
+                              });
+                              _audioService.setVolume(value);
+                            },
+                          ),
+                          trailing: const Icon(Icons.volume_up),
+                        ),
+                        const Divider(),
+                        ListTile(
+                          leading: const Icon(Icons.play_circle_outline),
+                          title: const Text('Testar Som'),
+                          subtitle: const Text(
+                            'Ouvir som de conclusão de sessão',
+                          ),
+                          onTap: () async {
+                            await _audioService.playSound(
+                              SoundType.sessionComplete,
+                            );
+                          },
+                          trailing: const Icon(Icons.chevron_right),
+                        ),
+                        const Divider(),
+                        ListTile(
+                          leading: const Icon(Icons.notification_add),
+                          title: const Text('Testar Notificação'),
+                          subtitle: const Text('Mostrar notificação de teste'),
+                          onTap: () async {
+                            await _notificationService.testNotification();
+                          },
+                          trailing: const Icon(Icons.chevron_right),
+                        ),
+                      ],
                       const Divider(),
-                      ListTile(
-                        leading: const Icon(Icons.notification_add),
-                        title: const Text('Testar Notificação'),
-                        subtitle: const Text('Mostrar notificação de teste'),
-                        onTap: () async {
-                          await _notificationService.testNotification();
+                      SwitchListTile(
+                        title: const Text('Notificações'),
+                        subtitle: const Text(
+                          'Mostrar notificações quando as sessões terminarem',
+                        ),
+                        value: _notificationsEnabled,
+                        onChanged: (value) {
+                          setState(() {
+                            _notificationsEnabled = value;
+                          });
+                          _notificationService.setNotificationsEnabled(value);
                         },
-                        trailing: const Icon(Icons.chevron_right),
+                        secondary: const Icon(Icons.notifications),
                       ),
                     ],
-                    const Divider(),
-                    SwitchListTile(
-                      title: const Text('Notificações'),
-                      subtitle: const Text(
-                        'Mostrar notificações quando as sessões terminarem',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Credits Button
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.info_outline, color: Colors.blue),
+                  title: const Text('Créditos'),
+                  subtitle: const Text(
+                    'Informações sobre o app e recursos utilizados',
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (context) => const CreditsScreen(),
                       ),
-                      value: _notificationsEnabled,
-                      onChanged: (value) {
-                        setState(() {
-                          _notificationsEnabled = value;
-                        });
-                        _notificationService.setNotificationsEnabled(value);
-                      },
-                      secondary: const Icon(Icons.notifications),
+                    );
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Sobre os Alertas Sonoros',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Os alertas sonoros ajudam você a manter o foco fornecendo feedback de áudio quando as sessões terminam. Sons diferentes tocam para sessões de trabalho, pausas e conclusões de ciclo completo.',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
-
-            // Credits Button
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.info_outline, color: Colors.blue),
-                title: const Text('Créditos'),
-                subtitle: const Text(
-                  'Informações sobre o app e recursos utilizados',
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () {
-                  Navigator.push<void>(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) => const CreditsScreen(),
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 24),
-            const Text(
-              'Sobre os Alertas Sonoros',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Os alertas sonoros ajudam você a manter o foco fornecendo feedback de áudio quando as sessões terminam. Sons diferentes tocam para sessões de trabalho, pausas e conclusões de ciclo completo.',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
