@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
+import 'core/services/initialization_service.dart';
 import 'core/theme/app_theme.dart';
 import 'features/pomodoro/presentation/pages/timer_screen.dart';
-import 'injection_container.dart' as di;
+import 'injection_container.dart' as service_locator;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await di.init();
+
+  // Initialize dependency injection
+  await service_locator.init();
+
+  await InitializationService.initializeServices();
 
   runApp(const MyApp());
 }

@@ -4,6 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/network/network_info.dart';
 import 'core/platform/local_data_source.dart';
+import 'core/services/audio_service.dart';
+import 'core/services/initialization_service.dart';
+import 'core/services/notification_service.dart';
 import 'features/pomodoro/data/datasources/pomodoro_local_data_source.dart';
 import 'features/pomodoro/data/repositories/pomodoro_repository_impl.dart';
 import 'features/pomodoro/domain/repositories/pomodoro_repository.dart';
@@ -27,6 +30,8 @@ Future<void> init() async {
       updatePomodoroSession: sl(),
       getCurrentSession: sl(),
       clearCurrentSession: sl(),
+      audioService: sl(),
+      notificationService: sl(),
     ),
   );
 
@@ -54,6 +59,11 @@ Future<void> init() async {
   sl.registerLazySingleton<LocalDataSource>(
     () => LocalDataSourceImpl(sharedPreferences: sl()),
   );
+
+  // Services
+  sl.registerLazySingleton(() => AudioService());
+  sl.registerLazySingleton(() => NotificationService());
+  sl.registerLazySingleton(() => InitializationService());
 
   //! External
   final sharedPreferences = await SharedPreferences.getInstance();
