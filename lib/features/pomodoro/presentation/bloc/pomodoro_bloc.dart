@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/services/audio_service.dart';
+import '../../../../core/services/notification_service.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../../../../core/utils/result.dart';
 import '../../domain/entities/pomodoro_session.dart';
@@ -18,6 +20,8 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
   final UpdatePomodoroSession updatePomodoroSession;
   final GetCurrentSession getCurrentSession;
   final ClearCurrentSession clearCurrentSession;
+  final AudioService audioService;
+  final NotificationService notificationService;
 
   Timer? _timer;
   PomodoroSession? _currentSession;
@@ -27,6 +31,8 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
     required this.updatePomodoroSession,
     required this.getCurrentSession,
     required this.clearCurrentSession,
+    required this.audioService,
+    required this.notificationService,
   }) : super(PomodoroInitial()) {
     on<StartPomodoroEvent>(_onStartPomodoro);
     on<PausePomodoroEvent>(_onPausePomodoro);
@@ -136,6 +142,8 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
     if (_currentSession != null) {
       _stopTimer();
 
+      await _playCompletionSoundAndNotification();
+
       // Mark current session as completed and skipped
       _currentSession = _currentSession!.copyWith(
         status: PomodoroStatus.completed,
@@ -219,6 +227,9 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
   ) async {
     if (_currentSession != null) {
       _stopTimer();
+
+      await _playCompletionSoundAndNotification();
+
       _currentSession = _currentSession!.copyWith(
         status: PomodoroStatus.completed,
         remainingSeconds: 0,
@@ -242,6 +253,10 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
         _currentSession!.type,
         _currentSession!.totalSessions,
       )) {
+        if (_currentSession!.type == PomodoroType.longBreak) {
+          await audioService.playSound(SoundType.cycleComplete);
+        }
+
         emit(PomodoroCompleted(session: _currentSession!));
         await clearCurrentSession(NoParams());
         _currentSession = null;
@@ -322,8 +337,30 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
     }
   }
 
+  Future<void> _playCompletionSoundAndNotification() async {
+    if (_currentSession == null) return;
+
+    final soundType = _getSoundTypeForSession(_currentSession!.type);
+    await audioService.playSound(soundType);
+
+    await notificationService.showSessionCompleteNotification(
+      _currentSession!.type,
+      _currentSession!.currentSession,
+    );
+  }
+
+  SoundType _getSoundTypeForSession(PomodoroType sessionType) {
+    switch (sessionType) {
+      case PomodoroType.work:
+        return SoundType.sessionComplete;
+      case PomodoroType.shortBreak:
+      case PomodoroType.longBreak:
+        return SoundType.breakComplete;
+    }
+  }
+
   String _mapFailureToMessage(dynamic failure) {
     // Map specific failure types to user-friendly error messages
-    return 'An error occurred. Please try again.';
+    return 'Ocorreu um erro. Por favor, tente novamente.';
   }
 }

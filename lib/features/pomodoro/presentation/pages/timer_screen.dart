@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/dialog_utils.dart';
-import '../../../../injection_container.dart' as di;
+import '../../../../injection_container.dart' as service_locator;
+import '../../../settings/presentation/pages/settings_screen.dart';
 import '../../domain/entities/pomodoro_session.dart';
 import '../bloc/pomodoro_bloc.dart';
 import '../bloc/pomodoro_event.dart';
@@ -18,7 +19,7 @@ class TimerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          di.sl<PomodoroBloc>()..add(LoadCurrentSessionEvent()),
+          service_locator.sl<PomodoroBloc>()..add(LoadCurrentSessionEvent()),
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -33,6 +34,18 @@ class TimerScreen extends StatelessWidget {
           elevation: 0,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (context) => const SettingsScreen(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.settings, color: Colors.black54),
+              tooltip: 'Configurações',
+            ),
             BlocBuilder<PomodoroBloc, PomodoroState>(
               builder: (context, state) {
                 if (state is PomodoroInitial) return const SizedBox.shrink();
@@ -81,7 +94,6 @@ class _SessionTypeSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PomodoroBloc, PomodoroState>(
       builder: (context, state) {
-        // Only show selector when timer is not running
         if (state is PomodoroRunning) {
           return const SizedBox.shrink();
         }
