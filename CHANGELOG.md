@@ -8,11 +8,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- UI implementation
-- Settings screen
-- Statistics dashboard
-- Notifications system
-- Sound alerts
+- Enhanced dark theme design
+- Smooth animations and transitions
+- Statistics dashboard with detailed analytics
+- Customizable timer durations
+
+## [0.3.0] - 2025-09-22
+
+### Added
+- 🔔 **Sound Alerts System**
+  - Customizable audio notifications for session completions
+  - Different sounds for work sessions, breaks, and cycle completions
+  - AudioService with volume control and enable/disable options
+  - Graceful error handling for missing sound files
+
+- 📢 **Push Notifications**
+  - System notifications when sessions complete
+  - Contextual notification messages for different session types
+  - NotificationService with permission handling
+  - Cross-platform notification support (Android/iOS)
+
+- ⚙️ **Settings Screen**
+  - Sound alerts configuration (enable/disable, volume control)
+  - Notification preferences
+  - Test sound functionality
+  - Modern Material Design 3 interface
+
+- 🛠️ **Service Architecture**
+  - AudioService singleton for consistent audio management
+  - NotificationService for system notification handling
+  - Proper dependency injection integration
+  - Service initialization in app startup
+
+### Enhanced
+- 🎛️ **Timer Screen**
+  - Added settings button in app bar
+  - Integrated sound and notification triggers
+  - Better user experience with audio feedback
+
+- 🏗️ **Clean Architecture**
+  - New core/services directory structure
+  - Improved separation of concerns
+  - Enhanced dependency injection container
+
+- 🧪 **Testing Coverage**
+  - AudioService unit tests
+  - Sound configuration testing
+  - Maintained comprehensive test suite (48+ tests)
+
+### Technical
+- Updated to version 0.3.0+3
+- Added audioplayers and flutter_local_notifications dependencies
+- Asset management for sound files
+- Cross-platform audio and notification support
 
 ## [0.2.0] - 2025-09-18
 
