@@ -24,18 +24,19 @@ class CreditsScreen extends StatelessWidget {
           children: [
             // App Info
             _buildAppSection(),
-            const SizedBox(height: 32),
+            const SizedBox(height: 8),
 
             // Sound Assets
             _buildSoundAssetsSection(context),
-            const SizedBox(height: 32),
+            const SizedBox(height: 8),
 
             // Development
             _buildDevelopmentSection(),
-            const SizedBox(height: 32),
+            const SizedBox(height: 8),
 
             // Open Source
             _buildOpenSourceSection(context),
+            const SizedBox(height: 16),
           ],
         ),
       ),

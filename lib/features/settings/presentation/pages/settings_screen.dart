@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/services/audio_service.dart';
@@ -101,16 +103,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           },
                           trailing: const Icon(Icons.chevron_right),
                         ),
-                        const Divider(),
-                        ListTile(
-                          leading: const Icon(Icons.notification_add),
-                          title: const Text('Testar Notificação'),
-                          subtitle: const Text('Mostrar notificação de teste'),
-                          onTap: () async {
-                            await _notificationService.testNotification();
-                          },
-                          trailing: const Icon(Icons.chevron_right),
-                        ),
                       ],
                       const Divider(),
                       SwitchListTile(
@@ -127,6 +119,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         },
                         secondary: const Icon(Icons.notifications),
                       ),
+                      if (_notificationsEnabled && Platform.isAndroid) ...[
+                        const Divider(),
+                        ListTile(
+                          leading: const Icon(Icons.notification_add),
+                          title: const Text('Testar Notificação'),
+                          subtitle: const Text(
+                            'Enviar notificação de teste para verificar se está funcionando',
+                          ),
+                          onTap: () async {
+                            await _notificationService.sendTestNotification();
+                          },
+                          trailing: const Icon(Icons.chevron_right),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -154,27 +160,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
 
               const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Sobre os Alertas Sonoros',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+              Column(
+                children: [
+                  const Text(
+                    'Sobre os Alertas Sonoros',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Os alertas sonoros ajudam você a manter o foco fornecendo feedback de áudio quando as sessões terminam. Sons diferentes tocam para sessões de trabalho, pausas e conclusões de ciclo completo.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Os alertas sonoros ajudam você a manter o foco fornecendo feedback de áudio quando as sessões terminam. Sons diferentes tocam para sessões de trabalho, pausas e conclusões de ciclo completo.',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
               ),
             ],
           ),
