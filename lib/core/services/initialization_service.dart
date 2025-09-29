@@ -25,8 +25,13 @@ class InitializationService {
 
   static Future<void> _initializeNotificationService() async {
     try {
-      await service_locator.sl<NotificationService>().initialize();
-      await service_locator.sl<NotificationService>().ensurePermissions();
+      final notificationService = service_locator.sl<NotificationService>();
+      await notificationService.initialize();
+      try {
+        await notificationService.ensurePermissions();
+      } catch (e) {
+        debugPrint('Erro ao solicitar permissões de notificação: $e');
+      }
     } catch (e) {
       debugPrint('Erro ao inicializar NotificationService: $e');
     }
