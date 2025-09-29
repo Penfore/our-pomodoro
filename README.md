@@ -65,23 +65,21 @@
 
 | Initial State | Work Session | Short Break | Session Complete |
 |:-------------:|:------------:|:-----------:|:----------------:|
-| ![Initial State](images/initial-state.png) | ![Work Session](images/work.png) | ![Short Break](images/short-pause.png) | ![Session Complete](images/completed-session.png) |
+| ![Initial timer state showing 25:00 ready to start first Pomodoro session](images/initial-state.png) | ![Work session in progress with red circular timer and pause controls](images/work.png) | ![Short break screen with green timer and relaxing interface](images/short-pause.png) | ![Session complete screen showing completion message and next session options](images/completed-session.png) |
 | Ready to start your first Pomodoro session | 25-minute focus timer with progress tracking | 5-minute break with relaxing interface | Session completed with next action options |
 
 </div>
 
-### �️ New Features (v0.3.1)
+### New Features (v0.3.1)
 
 <div align="center">
 
 | Settings Screen | Credits Screen |
 |:---------------:|:--------------:|
-| ![Settings](images/settings-screen.png) | ![Credits](images/credits-screen.png) |
+| ![Settings screen with audio controls, volume slider, notification toggles and test buttons](images/settings.png) | ![Credits screen showing Pixabay sound attributions and library acknowledgments with links](images/credits.png) |
 | Complete audio and notification controls | Proper attribution for sounds and libraries |
 
 </div>
-
-> 💡 **What the new screenshots show**: The Settings screen features comprehensive audio controls including volume sliders, sound toggles, notification settings, and Android-specific notification testing. The Credits screen provides complete attribution for all sound resources from Pixabay and libraries used, with clickable links and proper licensing information.
 
 ### ✨ **Interface Highlights**
 
