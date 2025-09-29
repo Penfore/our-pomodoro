@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:our_pomodoro/core/services/audio_service.dart';
 import 'package:our_pomodoro/core/services/initialization_service.dart';
 import 'package:our_pomodoro/core/services/notification_service.dart';
+import 'package:our_pomodoro/injection_container.dart' as service_locator;
 
 class MockAudioService extends Mock implements AudioService {}
 
@@ -13,21 +13,23 @@ void main() {
   group('InitializationService', () {
     late MockAudioService mockAudioService;
     late MockNotificationService mockNotificationService;
-    late GetIt serviceLocator;
 
     setUp(() {
       mockAudioService = MockAudioService();
       mockNotificationService = MockNotificationService();
 
-      serviceLocator = GetIt.instance;
-      serviceLocator.reset();
-
-      serviceLocator.registerLazySingleton<AudioService>(() => mockAudioService);
-      serviceLocator.registerLazySingleton<NotificationService>(() => mockNotificationService);
+      // Reset GetIt and register our mocks
+      service_locator.sl.reset();
+      service_locator.sl.registerLazySingleton<AudioService>(
+        () => mockAudioService,
+      );
+      service_locator.sl.registerLazySingleton<NotificationService>(
+        () => mockNotificationService,
+      );
     });
 
     tearDown(() {
-      serviceLocator.reset();
+      service_locator.sl.reset();
     });
 
     test('should be a singleton', () {
@@ -40,45 +42,72 @@ void main() {
     test('should initialize all services successfully', () async {
       when(() => mockAudioService.initialize()).thenAnswer((_) async {});
       when(() => mockNotificationService.initialize()).thenAnswer((_) async {});
-      when(() => mockNotificationService.requestPermission()).thenAnswer((_) async => true);
+      when(
+        () => mockNotificationService.ensurePermissions(),
+      ).thenAnswer((_) async => true);
 
       await InitializationService.initializeServices();
 
       verify(() => mockAudioService.initialize()).called(1);
       verify(() => mockNotificationService.initialize()).called(1);
-      verify(() => mockNotificationService.requestPermission()).called(1);
+      verify(() => mockNotificationService.ensurePermissions()).called(1);
     });
 
-    test('should handle audio service initialization error gracefully', () async {
-      when(() => mockAudioService.initialize()).thenThrow(Exception('Audio error'));
-      when(() => mockNotificationService.initialize()).thenAnswer((_) async {});
-      when(() => mockNotificationService.requestPermission()).thenAnswer((_) async => true);
+    test(
+      'should handle audio service initialization error gracefully',
+      () async {
+        when(
+          () => mockAudioService.initialize(),
+        ).thenThrow(Exception('Audio error'));
+        when(
+          () => mockNotificationService.initialize(),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockNotificationService.ensurePermissions(),
+        ).thenAnswer((_) async => true);
 
-      await InitializationService.initializeServices();
+        await InitializationService.initializeServices();
 
-      verify(() => mockNotificationService.initialize()).called(1);
-      verify(() => mockNotificationService.requestPermission()).called(1);
-    });
+        verify(() => mockAudioService.initialize()).called(1);
+        verify(() => mockNotificationService.initialize()).called(1);
+        verify(() => mockNotificationService.ensurePermissions()).called(1);
+      },
+    );
 
-    test('should handle notification service initialization error gracefully', () async {
-      when(() => mockAudioService.initialize()).thenAnswer((_) async {});
-      when(() => mockNotificationService.initialize()).thenThrow(Exception('Notification error'));
-      when(() => mockNotificationService.requestPermission()).thenAnswer((_) async => true);
+    test(
+      'should handle notification service initialization error gracefully',
+      () async {
+        when(() => mockAudioService.initialize()).thenAnswer((_) async {});
+        when(
+          () => mockNotificationService.initialize(),
+        ).thenThrow(Exception('Notification error'));
 
-      await InitializationService.initializeServices();
+        await InitializationService.initializeServices();
 
-      verify(() => mockAudioService.initialize()).called(1);
-    });
+        verify(() => mockAudioService.initialize()).called(1);
+        verify(() => mockNotificationService.initialize()).called(1);
+        // ensurePermissions should not be called if initialize fails
+        verifyNever(() => mockNotificationService.ensurePermissions());
+      },
+    );
 
-    test('should handle notification permission request error gracefully', () async {
-      when(() => mockAudioService.initialize()).thenAnswer((_) async {});
-      when(() => mockNotificationService.initialize()).thenAnswer((_) async {});
-      when(() => mockNotificationService.requestPermission()).thenThrow(Exception('Permission error'));
+    test(
+      'should handle notification permission request error gracefully',
+      () async {
+        when(() => mockAudioService.initialize()).thenAnswer((_) async {});
+        when(
+          () => mockNotificationService.initialize(),
+        ).thenAnswer((_) async {});
+        when(
+          () => mockNotificationService.ensurePermissions(),
+        ).thenThrow(Exception('Permission error'));
 
-      await InitializationService.initializeServices();
+        await InitializationService.initializeServices();
 
-      verify(() => mockAudioService.initialize()).called(1);
-      verify(() => mockNotificationService.initialize()).called(1);
-    });
+        verify(() => mockAudioService.initialize()).called(1);
+        verify(() => mockNotificationService.initialize()).called(1);
+        verify(() => mockNotificationService.ensurePermissions()).called(1);
+      },
+    );
   });
 }
