@@ -37,18 +37,19 @@ Examples of behavior that contributes to creating a positive environment include
 - Dart 3.0 or later
 - Git
 - A code editor (VS Code, Android Studio, etc.)
+- For testing notifications: Android device or emulator (iOS notifications work differently)
 
 ### Setup Development Environment
 
 1. Fork the repository on GitHub
 2. Clone your fork locally:
    ```bash
-   git clone https://github.com/your-username/our_pomodoro.git
-   cd our_pomodoro
+   git clone https://github.com/your-username/our-pomodoro.git
+   cd our-pomodoro
    ```
 3. Add the original repository as upstream:
    ```bash
-   git remote add upstream https://github.com/original-username/our_pomodoro.git
+   git remote add upstream https://github.com/Penfore/our-pomodoro.git
    ```
 4. Install dependencies:
    ```bash
@@ -72,7 +73,9 @@ When you create a bug report, please include:
 - **Actual behavior**
 - **Screenshots** if applicable
 - **Device information** (OS, version, etc.)
-- **App version**
+- **App version** (current: v0.3.1)
+- **Notification permissions** (if reporting notification issues)
+- **Platform-specific details** (Android API level, iOS version)
 
 ### Suggesting Enhancements
 
@@ -91,11 +94,14 @@ Look for issues labeled `good first issue` if you're new to the project.
 #### Areas Where We Need Help
 
 - UI/UX improvements
+- iOS native interface implementation (Cupertino widgets)
+- Platform-specific optimizations
 - Performance optimizations
-- Testing coverage
+- Testing coverage (especially cross-platform notification testing)
 - Documentation
 - Accessibility features
-- Internationalization
+- Internationalization (additional languages beyond Portuguese)
+- Sound themes and audio enhancements
 
 ## Development Process
 
@@ -154,8 +160,13 @@ We follow the [Effective Dart](https://dart.dev/guides/language/effective-dart) 
 ```
 lib/
 ├── core/                 # Shared utilities
+│   ├── services/        # App services (audio, notifications, etc.)
+│   ├── theme/           # App theming
+│   └── constants/       # App constants
 ├── features/            # Feature modules
-│   └── feature_name/
+│   ├── pomodoro/        # Timer functionality
+│   ├── settings/        # Settings screen
+│   └── credits/         # Credits screen
 │       ├── data/        # Data layer
 │       ├── domain/      # Domain layer
 │       └── presentation/# Presentation layer
@@ -190,9 +201,12 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/) speci
 
 ```bash
 feat(timer): add pause functionality
-fix(notifications): resolve notification not showing issue
-docs(readme): update installation instructions
-test(timer): add unit tests for timer logic
+feat(notifications): implement robust permission handling
+fix(notifications): resolve notification not showing on real devices
+fix(settings): platform-specific notification testing
+docs(readme): update screenshots with new features
+test(notifications): add cross-platform notification tests
+chore(deps): update flutter_local_notifications to latest version
 ```
 
 ## Pull Request Process
@@ -202,9 +216,11 @@ test(timer): add unit tests for timer logic
 1. Ensure your code follows the style guidelines
 2. Run `flutter analyze` and fix any issues
 3. Run `flutter test` and ensure all tests pass
-4. Add tests for new functionality
-5. Update documentation if needed
-6. Rebase your branch on the latest `develop`
+4. Test on both Android and iOS if possible (especially for notification features)
+5. Add tests for new functionality
+6. Update documentation if needed
+7. Test notification permissions on real devices when applicable
+8. Rebase your branch on the latest `develop`
 
 ### Pull Request Template
 

@@ -9,9 +9,66 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 - Enhanced dark theme design
+- iOS native interface with Cupertino widgets
+- Adaptive design that feels native on each platform
 - Smooth animations and transitions
 - Statistics dashboard with detailed analytics
 - Customizable timer durations
+- Multiple sound themes
+- Multiple language support
+
+## [0.3.1] - 2025-09-25
+
+### Added
+- 🔔 **Robust Notification System**
+  - Comprehensive permission handling for Android and iOS
+  - Dedicated notification channel for better Android management
+  - Automatic permission verification before showing notifications
+  - High-priority notification settings to bypass battery optimizations
+  - Platform-specific notification testing (Android only)
+
+- 🛠️ **Enhanced Settings Screen**
+  - Notification test button (Android only, since iOS doesn't show notifications when app is open)
+  - Improved notification permission management
+  - Better user feedback for notification status
+  - Platform-aware UI elements
+
+- 🏆 **Credits Screen Integration**
+  - Complete attribution for Pixabay sound resources
+  - Clickable links with copy-to-clipboard functionality
+  - Proper licensing information display
+  - Library acknowledgments
+
+### Enhanced
+- 📱 **Android Permissions**
+  - Added `VIBRATE` permission for notification vibration
+  - Added `WAKE_LOCK` permission to wake device for notifications
+  - Added `POST_NOTIFICATIONS` permission for Android 13+ support
+  - Added `RECEIVE_BOOT_COMPLETED` for post-reboot notifications
+
+- 🍎 **iOS Configuration**
+  - Added `UIBackgroundModes` for background processing
+  - Added `BGTaskSchedulerPermittedIdentifiers` for scheduled tasks
+  - Improved background notification handling
+
+- 🔧 **Notification Service**
+  - Created explicit notification channel for Android
+  - Implemented permission checking before notification attempts
+  - Added graceful fallback for notification errors
+  - Enhanced notification details with maximum priority settings
+
+### Fixed
+- 🐛 **Real Device Notifications**
+  - Resolved notifications not appearing on physical Android devices
+  - Fixed permission-related notification failures
+  - Improved notification reliability across different Android versions
+  - Better handling of device-specific notification settings
+
+### Technical
+- Updated to version 0.3.1+4
+- Improved notification architecture with robust error handling
+- Enhanced cross-platform notification support
+- Better separation between platform-specific features
 
 ## [0.3.0] - 2025-09-22
 
