@@ -30,6 +30,29 @@ class NotificationService {
     );
 
     await _notificationsPlugin.initialize(initializationSettings);
+
+    await _createNotificationChannel();
+  }
+
+  Future<void> _createNotificationChannel() async {
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'pomodoro_channel',
+      'Notificações Pomodoro',
+      description: 'Notificações para conclusões de sessões Pomodoro',
+      importance: Importance.high,
+      playSound: true,
+      enableVibration: true,
+      showBadge: true,
+    );
+
+    final android = _notificationsPlugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+
+    if (android != null) {
+      await android.createNotificationChannel(channel);
+    }
   }
 
   Future<bool> requestPermission() async {
@@ -60,6 +83,27 @@ class NotificationService {
     _notificationsEnabled = enabled;
   }
 
+  Future<bool> areNotificationsEnabled() async {
+    final android = _notificationsPlugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+
+    if (android != null) {
+      return await android.areNotificationsEnabled() ?? false;
+    }
+
+    return true; // Assume enabled for iOS
+  }
+
+  Future<bool> ensurePermissions() async {
+    if (await areNotificationsEnabled()) {
+      return true;
+    }
+
+    return await requestPermission();
+  }
+
   /// Show session complete notification
   Future<void> showSessionCompleteNotification(
     PomodoroType sessionType,
@@ -67,19 +111,34 @@ class NotificationService {
   ) async {
     if (!_notificationsEnabled) return;
 
+    if (!await ensurePermissions()) {
+      return;
+    }
+
     final (title, body) = _getNotificationContent(sessionType, sessionNumber);
 
     final androidDetails = AndroidNotificationDetails(
       'pomodoro_channel',
       'Notificações Pomodoro',
       channelDescription: 'Notificações para conclusões de sessões Pomodoro',
-      importance: Importance.high,
-      priority: Priority.high,
+      importance: Importance.max,
+      priority: Priority.max,
       playSound: true,
       enableVibration: true,
+      enableLights: true,
+      showWhen: true,
+      when: DateTime.now().millisecondsSinceEpoch,
+      autoCancel: false,
+      ongoing: false,
+      showProgress: false,
+      maxProgress: 0,
+      channelShowBadge: true,
+      onlyAlertOnce: false,
       sound: RawResourceAndroidNotificationSound(
         _getAndroidSoundName(sessionType),
       ),
+      fullScreenIntent: true,
+      category: AndroidNotificationCategory.alarm,
     );
 
     const iosDetails = DarwinNotificationDetails(
@@ -134,13 +193,53 @@ class NotificationService {
     }
   }
 
-  /// Test notification - for debug purposes
-  Future<void> testNotification() async {
-    print('🧪 Testando notificação diretamente...');
-    await showSessionCompleteNotification(PomodoroType.work, 1);
-  }
-
   Future<void> cancelAllNotifications() async {
     await _notificationsPlugin.cancelAll();
+  }
+
+  Future<void> sendTestNotification() async {
+    if (!_notificationsEnabled) return;
+
+    if (!await ensurePermissions()) {
+      return;
+    }
+
+    final androidDetails = AndroidNotificationDetails(
+      'pomodoro_channel',
+      'Notificações Pomodoro',
+      channelDescription: 'Notificações para conclusões de sessões Pomodoro',
+      importance: Importance.max,
+      priority: Priority.max,
+      playSound: true,
+      enableVibration: true,
+      enableLights: true,
+      showWhen: true,
+      when: DateTime.now().millisecondsSinceEpoch,
+      autoCancel: true,
+      category: AndroidNotificationCategory.message,
+    );
+
+    const iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+      interruptionLevel: InterruptionLevel.active,
+    );
+
+    final notificationDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+
+    try {
+      await _notificationsPlugin.show(
+        999,
+        '🔔 Teste de Notificação',
+        'Se você está vendo isso, as notificações estão funcionando!',
+        notificationDetails,
+      );
+    } catch (e) {
+      // Silent fail
+    }
   }
 }
