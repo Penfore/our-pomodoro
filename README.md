@@ -3,7 +3,7 @@
 <div align="center">
   <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter" />
   <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart" />
-  <img src="https://img.shields.io/badge/version-0.3.0-blue?style=for-the-badge" alt="Version" />
+  <img src="https://img.shields.io/badge/version-0.3.1-blue?style=for-the-badge" alt="Version" />
   <img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License" />
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge" alt="PRs Welcome" />
 </div>
@@ -23,16 +23,18 @@
 
 ## ✨ Features
 
-### 🎯 **Current Features (v0.3.0)**
+### 🎯 **Current Features (v0.3.1)**
 - 🍅 **Complete Pomodoro Timer** - Full timer functionality with start/pause/resume/reset ✅
 - ⏭️ **Skip Session** - Skip current session and auto-start next one ✅
 - 🔄 **Auto Transitions** - Seamless flow between work and break sessions ✅
 - 📊 **Session Progress** - Real-time counter and visual progress indicators ✅
+- 🔊 **Sound Alerts** - Custom audio notifications for session completions ✅
+- 📱 **Push Notifications** - Background notifications with robust permission handling ✅
+- 🇧🇷 **Portuguese Interface** - Complete localization for Brazilian users ✅
+- ⚙️ **Advanced Settings** - Volume control, sound/notification toggles ✅
+- 🏆 **Credits System** - Proper attribution for sounds and libraries ✅
 - 🎛️ **Smart Controls** - Context-aware controls that adapt to session state ✅
-- 🔔 **Sound Alerts** - Customizable audio notifications for session completions ✅
-- 🔔 **Push Notifications** - System notifications when sessions complete ✅
-- � **Sound Settings** - Control volume and enable/disable sound alerts ✅
-- �💾 **Session Persistence** - Resume your session after app restart ✅
+- 💾 **Session Persistence** - Resume your session after app restart ✅
 - 🏗️ **Clean Architecture** - Maintainable, testable, and scalable codebase ✅
 - 🧪 **Comprehensive Testing** - 48+ automated tests ensuring reliability ✅
 - 📱 **Cross Platform** - Works on Android and iOS (build for iOS requires macOS) ✅
@@ -48,13 +50,16 @@
 ### 📋 **Planned Features**
 - ⚙️ **Customizable Settings** - Adjust timer durations to your preference
 - 📊 **Productivity Statistics** - Track your focus sessions and streaks
-- 🔔 **Smart Notifications** - Get notified when sessions complete
 - 🌙 **Enhanced Dark Theme** - Improve dark theme UI/UX design
 - 🎨 **Multiple Themes** - Additional color schemes and customization options
+- 📱 **iOS Native Interface** - Cupertino widgets for authentic iOS experience
+- 🔄 **Adaptive Design** - Platform-specific widgets that feel native on each OS
+- 🎵 **Multiple Sound Themes** - Different notification sound sets
+- 🌍 **Multiple Languages** - Support for additional languages beyond Portuguese
 
 ## 📱 Screenshots
 
-### 🎯 Timer Interface (v0.2.0)
+### 🎯 Complete App Interface (v0.3.1)
 
 <div align="center">
 
@@ -65,16 +70,31 @@
 
 </div>
 
-> 💡 **What the screenshots show**: From left to right, you can see the complete user journey - starting fresh, focusing during work time, taking a well-deserved break, and celebrating completion before moving to the next session. Notice how the interface adapts with different colors, buttons, and messages for each state.
+### �️ New Features (v0.3.1)
+
+<div align="center">
+
+| Settings Screen | Credits Screen |
+|:---------------:|:--------------:|
+| ![Settings](images/settings-screen.png) | ![Credits](images/credits-screen.png) |
+| Complete audio and notification controls | Proper attribution for sounds and libraries |
+
+</div>
+
+> 💡 **What the new screenshots show**: The Settings screen features comprehensive audio controls including volume sliders, sound toggles, notification settings, and Android-specific notification testing. The Credits screen provides complete attribution for all sound resources from Pixabay and libraries used, with clickable links and proper licensing information.
 
 ### ✨ **Interface Highlights**
 
-- **� Clean, Distraction-Free Design** - Minimalist interface that keeps you focused
+- **🎯 Clean, Distraction-Free Design** - Minimalist interface that keeps you focused
 - **⏰ Circular Progress Timer** - Visual countdown with smooth animations
 - **📊 Session Progress Tracking** - Dots showing your progress through the 4-session cycle
 - **🎛️ Smart Control Buttons** - Context-aware controls (Start/Pause/Skip/Reset)
 - **🔄 Seamless Transitions** - Automatic flow between work sessions and breaks
 - **📱 Responsive Design** - Looks great on phones and tablets
+- **⚙️ Advanced Settings** - Complete audio and notification control panel
+- **🏆 Credits System** - Proper attribution with clickable links and licensing info
+- **🔔 Notification Testing** - Platform-specific notification testing (Android only)
+- **🎵 Sound Management** - Volume control, sound testing, and audio preferences
 
 ### 🎨 **Visual Features**
 - **Material Design 3** components with modern styling
@@ -82,11 +102,16 @@
 - **Real-time Updates** - Session counter and timer update smoothly
 - **Confirmation Dialogs** - Prevents accidental actions with user-friendly prompts
 - **System Theme Support** - Automatically follows system dark/light mode (basic implementation)
+- **Portuguese Localization** - Complete interface in Brazilian Portuguese
+- **Card-based Layout** - Clean, organized settings and credits screens
+- **Interactive Elements** - Sliders, switches, and buttons with smooth animations
+- **Platform-aware UI** - Features adapt based on the platform (Android/iOS)
 
-### 🔄 **Complete Pomodoro Flow Demo**
+### 🔄 **Complete App Experience Demo**
 
-Our Pomodoro follows the classic Pomodoro Technique with intelligent automation:
+Our Pomodoro follows the classic Pomodoro Technique with intelligent automation and comprehensive features:
 
+#### **Core Timer Flow:**
 1. **🚀 Start** → Choose work session from floating buttons
 2. **⏰ Focus** → 25-minute timer with progress visualization
 3. **✅ Complete** → Automatic transition to 5-minute break
@@ -95,7 +120,13 @@ Our Pomodoro follows the classic Pomodoro Technique with intelligent automation:
 6. **🎯 Long Break** → 15-minute break after completing 4 work sessions
 7. **🏁 Finish** → Complete cycle with option to start fresh
 
-**⏭️ Skip Feature**: Need to move on? Skip any session instantly with the purple "Skip Session" button!
+#### **Enhanced Features:**
+- **⏭️ Skip Feature**: Need to move on? Skip any session instantly with the purple "Skip Session" button!
+- **⚙️ Settings Access**: Tap the gear icon to access comprehensive audio and notification settings
+- **🔊 Sound Control**: Adjust volume, test sounds, and customize audio alerts
+- **📱 Notification Management**: Enable/disable notifications with platform-specific testing
+- **🏆 Credits & Attribution**: View complete information about sounds and libraries used
+- **🇧🇷 Portuguese Interface**: Fully localized experience for Brazilian users
 
 ## 🚀 Getting Started
 
@@ -226,19 +257,28 @@ open coverage/html/index.html
 - [x] Modern, intuitive timer interface
 - [x] Material Design 3 components
 - [x] Basic dark/light theme (needs improvements)
-- [x] 🔔 Sound alerts and notifications (v0.3.0)
+- [x] Sound alerts and notifications (v0.3.0)
+- [x] Robust notification system (v0.3.1)
 - [ ] Enhanced dark theme design
 - [ ] Smooth animations and transitions
 - [ ] Multiple color themes
 - [ ] Advanced responsive design
 
-### Phase 4: Advanced Features 📝
-- [ ] Statistics dashboard
-- [ ] Customizable settings
-- [ ] Export data functionality
-- [ ] Home screen widgets
+### Phase 4: Platform-Specific Features 📝
+- [ ] iOS native interface with Cupertino widgets
+- [ ] Adaptive design that feels native on each platform
+- [ ] Platform-specific animations and transitions
+- [ ] iOS-style navigation and interactions
+- [ ] Android Material You theming
 
-### Phase 5: Platform Features 📝
+### Phase 5: Advanced Features 📝
+- [ ] Statistics dashboard
+- [ ] Customizable settings (timer durations)
+- [ ] Multiple sound themes
+- [ ] Export data functionality
+- [ ] Multiple language support
+
+### Phase 6: Platform Integration 📝
 - [ ] Background execution and notifications
 - [ ] iOS App Store distribution
 - [ ] System integration improvements
