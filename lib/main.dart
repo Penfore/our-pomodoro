@@ -11,6 +11,7 @@ void main() async {
   // Initialize dependency injection
   await service_locator.init();
 
+  // Initialize all services (timezone, audio, notifications)
   await InitializationService.initializeServices();
 
   runApp(const MyApp());
