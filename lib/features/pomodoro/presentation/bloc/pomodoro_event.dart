@@ -28,12 +28,12 @@ class ResetPomodoroEvent extends PomodoroEvent {}
 class SkipPomodoroEvent extends PomodoroEvent {}
 
 class TickPomodoroEvent extends PomodoroEvent {
-  final int remainingSeconds;
+  final int? remainingSeconds;
 
-  const TickPomodoroEvent({required this.remainingSeconds});
+  const TickPomodoroEvent({this.remainingSeconds});
 
   @override
-  List<Object> get props => [remainingSeconds];
+  List<Object?> get props => [remainingSeconds];
 }
 
 class CompletePomodoroEvent extends PomodoroEvent {}
