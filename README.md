@@ -3,7 +3,7 @@
 <div align="center">
   <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter" />
   <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart" />
-  <img src="https://img.shields.io/badge/version-0.3.1-blue?style=for-the-badge" alt="Version" />
+  <img src="https://img.shields.io/badge/version-0.3.2-blue?style=for-the-badge" alt="Version" />
   <img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License" />
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge" alt="PRs Welcome" />
 </div>
@@ -62,7 +62,7 @@
 
 ## 📱 Screenshots
 
-### 🎯 Complete App Interface (v0.3.1)
+### 🎯 Complete App Interface (v0.3.2)
 
 <div align="center">
 
@@ -72,8 +72,6 @@
 | Ready to start your first Pomodoro session | 25-minute focus timer with progress tracking | 5-minute break with relaxing interface | Session completed with next action options |
 
 </div>
-
-### New Features (v0.3.1)
 
 <div align="center">
 
