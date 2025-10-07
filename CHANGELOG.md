@@ -17,6 +17,83 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multiple sound themes
 - Multiple language support
 
+## [0.3.2] - 2025-10-07
+
+### 🔧 Fixed - Critical Background Timer Bug (Issue #1)
+
+This release fixes a critical bug where the timer would not work correctly when the app was in background mode, reported by @GustavoEduardoMB.
+
+#### **Background Timer Accuracy**
+- 🐛 **Fixed timer calculation** - Timer now uses timestamp-based calculation instead of tick-based countdown
+  - Changed from `Timer.periodic` decrement to `DateTime` difference calculation
+  - Timer now shows accurate time even after being in background for extended periods
+  - Eliminated accumulated error from missed ticks when app was suspended
+
+#### **Scheduled Notifications**
+- 🔔 **Added scheduled notifications** - Notifications are now sent even if app is killed by system
+  - Implemented `zonedSchedule` with `AndroidScheduleMode.exactAllowWhileIdle`
+  - Notifications work when app is in foreground, background, or completely closed
+  - Automatic notification rescheduling when pausing/resuming sessions
+  - Smart cancellation of outdated scheduled notifications
+
+#### **Enhanced Android Configuration**
+- ⚙️ **Added critical Android permissions** for scheduled notifications
+  - `SCHEDULE_EXACT_ALARM` - Required for exact alarm scheduling (Android 12+)
+  - `USE_EXACT_ALARM` - Alternative exact alarm permission
+  - Added notification receivers for proper scheduled notification handling
+  - Added boot receiver to maintain scheduled notifications after device restart
+
+#### **Timezone Management**
+- 🌍 **Automatic timezone detection** - App now uses device's local timezone
+  - Moved timezone initialization to `InitializationService`
+  - Automatic detection from device settings (no longer hardcoded to São Paulo)
+  - Fallback mechanism using UTC offset if timezone name not found
+  - Universal support for any country/timezone
+
+### Added
+- 📅 **Timestamp-based timer calculation** - `recalculateRemainingTime()` method in `PomodoroSession`
+- 🔔 **Scheduled notification system** - `scheduleSessionCompletionNotification()` in `NotificationService`
+- 🌐 **Auto timezone detection** - Intelligent timezone setup in `InitializationService`
+- 📦 **New dependency**: `timezone ^0.10.1` for scheduled notifications
+- 🔄 **Background completion handler** - `_handleBackgroundCompletion()` in `PomodoroBloc`
+
+### Changed
+- ⏱️ **Timer logic refactored** - Uses `startedAt` as fixed reference instead of `lastResumedAt`
+- 🔄 **Tick event simplified** - `TickPomodoroEvent.remainingSeconds` now optional
+- 📱 **AndroidManifest updated** with notification receivers and boot handling
+- 🏗️ **Service initialization** - Timezone setup centralized in `InitializationService`
+
+### Technical Details
+- **Entity Changes**:
+  - Added `lastResumedAt` field to `PomodoroSession`
+  - Added `recalculateRemainingTime()` method using timestamp calculation
+
+- **Model Changes**:
+  - Updated `PomodoroSessionModel` serialization for `lastResumedAt`
+  - Full support in `fromJson()`, `toJson()`, `fromEntity()`, `toEntity()`
+
+- **BLoC Changes**:
+  - Timer now recalculates on every tick using timestamps
+  - Scheduled notification on start/resume
+  - Cancelled scheduled notification on pause/reset/skip/complete
+  - Background completion detection and handling
+
+- **Android Configuration**:
+  - Added `ScheduledNotificationReceiver` and `ScheduledNotificationBootReceiver`
+  - Enhanced activity with `showWhenLocked` and `turnScreenOn`
+  - Proper notification channel setup with exact alarm scheduling
+
+### Testing
+- ✅ All 57 tests passing
+- ✅ Background timer accuracy verified
+- ✅ Scheduled notifications tested on physical device
+- ✅ Timezone detection tested across different locales
+
+### Notes
+- **⚠️ Important**: Users must reinstall the app completely (not update) to apply AndroidManifest changes
+- **📱 Device Permissions**: On Android 12+, users may need to grant "Alarms & Reminders" permission
+- **🔋 Battery Optimization**: Some devices (Xiaomi, Samsung) may require disabling battery restrictions for the app
+
 ## [0.3.1] - 2025-09-25
 
 ### Added
