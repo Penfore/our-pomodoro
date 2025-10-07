@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 import '../../features/pomodoro/domain/entities/pomodoro_session.dart';
 
@@ -195,6 +196,77 @@ class NotificationService {
 
   Future<void> cancelAllNotifications() async {
     await _notificationsPlugin.cancelAll();
+  }
+
+  Future<void> scheduleSessionCompletionNotification({
+    required PomodoroType sessionType,
+    required int sessionNumber,
+    required DateTime scheduledTime,
+  }) async {
+    if (!_notificationsEnabled) return;
+
+    if (!await ensurePermissions()) {
+      return;
+    }
+
+    final (title, body) = _getNotificationContent(sessionType, sessionNumber);
+
+    final androidDetails = AndroidNotificationDetails(
+      'pomodoro_channel',
+      'Notificações Pomodoro',
+      channelDescription: 'Notificações para conclusões de sessões Pomodoro',
+      importance: Importance.max,
+      priority: Priority.max,
+      playSound: true,
+      enableVibration: true,
+      enableLights: true,
+      showWhen: true,
+      when: scheduledTime.millisecondsSinceEpoch,
+      autoCancel: false,
+      ongoing: false,
+      showProgress: false,
+      maxProgress: 0,
+      channelShowBadge: true,
+      onlyAlertOnce: false,
+      sound: RawResourceAndroidNotificationSound(
+        _getAndroidSoundName(sessionType),
+      ),
+      fullScreenIntent: true,
+      category: AndroidNotificationCategory.alarm,
+    );
+
+    const iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+      interruptionLevel: InterruptionLevel.timeSensitive,
+    );
+
+    final notificationDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+
+    try {
+      await _notificationsPlugin.zonedSchedule(
+        1,
+        title,
+        body,
+        tz.TZDateTime.from(scheduledTime, tz.local),
+        notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      );
+    } catch (e) {
+      // Silent fail - notification errors shouldn't break the app
+    }
+  }
+
+  Future<void> cancelScheduledNotification() async {
+    try {
+      await _notificationsPlugin.cancel(1);
+    } catch (e) {
+      // Silent fail
+    }
   }
 
   Future<void> sendTestNotification() async {

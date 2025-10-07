@@ -12,6 +12,7 @@ class PomodoroSession extends Equatable {
   final PomodoroStatus status;
   final DateTime startedAt;
   final DateTime? completedAt;
+  final DateTime? lastResumedAt;
   final int currentSession;
   final int totalSessions;
 
@@ -23,6 +24,7 @@ class PomodoroSession extends Equatable {
     required this.status,
     required this.startedAt,
     this.completedAt,
+    this.lastResumedAt,
     required this.currentSession,
     required this.totalSessions,
   });
@@ -35,6 +37,7 @@ class PomodoroSession extends Equatable {
     PomodoroStatus? status,
     DateTime? startedAt,
     DateTime? completedAt,
+    DateTime? lastResumedAt,
     int? currentSession,
     int? totalSessions,
   }) {
@@ -46,6 +49,7 @@ class PomodoroSession extends Equatable {
       status: status ?? this.status,
       startedAt: startedAt ?? this.startedAt,
       completedAt: completedAt ?? this.completedAt,
+      lastResumedAt: lastResumedAt ?? this.lastResumedAt,
       currentSession: currentSession ?? this.currentSession,
       totalSessions: totalSessions ?? this.totalSessions,
     );
@@ -67,6 +71,21 @@ class PomodoroSession extends Equatable {
   bool get isRunning => status == PomodoroStatus.running;
   bool get isPaused => status == PomodoroStatus.paused;
 
+  PomodoroSession recalculateRemainingTime() {
+    if (status != PomodoroStatus.running || lastResumedAt == null) {
+      return this;
+    }
+
+    final now = DateTime.now();
+    final totalElapsedSeconds = now.difference(startedAt).inSeconds;
+    final totalDurationSeconds = durationMinutes * 60;
+
+    final newRemainingSeconds = (totalDurationSeconds - totalElapsedSeconds)
+        .clamp(0, totalDurationSeconds);
+
+    return copyWith(remainingSeconds: newRemainingSeconds, lastResumedAt: now);
+  }
+
   @override
   List<Object?> get props => [
     id,
@@ -76,6 +95,7 @@ class PomodoroSession extends Equatable {
     status,
     startedAt,
     completedAt,
+    lastResumedAt,
     currentSession,
     totalSessions,
   ];

@@ -8,6 +8,7 @@ class PomodoroSessionModel {
   final PomodoroStatus status;
   final DateTime startedAt;
   final DateTime? completedAt;
+  final DateTime? lastResumedAt;
   final int currentSession;
   final int totalSessions;
 
@@ -19,6 +20,7 @@ class PomodoroSessionModel {
     required this.status,
     required this.startedAt,
     this.completedAt,
+    this.lastResumedAt,
     required this.currentSession,
     required this.totalSessions,
   });
@@ -32,6 +34,7 @@ class PomodoroSessionModel {
       status: entity.status,
       startedAt: entity.startedAt,
       completedAt: entity.completedAt,
+      lastResumedAt: entity.lastResumedAt,
       currentSession: entity.currentSession,
       totalSessions: entity.totalSessions,
     );
@@ -46,6 +49,7 @@ class PomodoroSessionModel {
       status: status,
       startedAt: startedAt,
       completedAt: completedAt,
+      lastResumedAt: lastResumedAt,
       currentSession: currentSession,
       totalSessions: totalSessions,
     );
@@ -62,6 +66,9 @@ class PomodoroSessionModel {
       completedAt: json['completedAt'] != null
           ? DateTime.parse(json['completedAt'])
           : null,
+      lastResumedAt: json['lastResumedAt'] != null
+          ? DateTime.parse(json['lastResumedAt'])
+          : null,
       currentSession: json['currentSession'],
       totalSessions: json['totalSessions'],
     );
@@ -76,6 +83,7 @@ class PomodoroSessionModel {
       'status': status.index,
       'startedAt': startedAt.toIso8601String(),
       'completedAt': completedAt?.toIso8601String(),
+      'lastResumedAt': lastResumedAt?.toIso8601String(),
       'currentSession': currentSession,
       'totalSessions': totalSessions,
     };
@@ -89,6 +97,7 @@ class PomodoroSessionModel {
     PomodoroStatus? status,
     DateTime? startedAt,
     DateTime? completedAt,
+    DateTime? lastResumedAt,
     int? currentSession,
     int? totalSessions,
   }) {
@@ -100,6 +109,7 @@ class PomodoroSessionModel {
       status: status ?? this.status,
       startedAt: startedAt ?? this.startedAt,
       completedAt: completedAt ?? this.completedAt,
+      lastResumedAt: lastResumedAt ?? this.lastResumedAt,
       currentSession: currentSession ?? this.currentSession,
       totalSessions: totalSessions ?? this.totalSessions,
     );

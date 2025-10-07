@@ -54,11 +54,7 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_currentSession != null && _currentSession!.remainingSeconds > 0) {
-        add(
-          TickPomodoroEvent(
-            remainingSeconds: _currentSession!.remainingSeconds - 1,
-          ),
-        );
+        add(const TickPomodoroEvent());
       } else {
         add(CompletePomodoroEvent());
       }
@@ -84,11 +80,16 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
 
     result.fold(
       (failure) => emit(PomodoroError(message: _mapFailureToMessage(failure))),
-      (session) {
-        _currentSession = session.copyWith(status: PomodoroStatus.running);
+      (session) async {
+        _currentSession = session.copyWith(
+          status: PomodoroStatus.running,
+          lastResumedAt: DateTime.now(),
+        );
         emit(PomodoroRunning(session: _currentSession!));
         _startTimer();
-        _updateSessionInRepository();
+        await _updateSessionInRepository();
+
+        await _scheduleCompletionNotification();
       },
     );
   }
@@ -99,6 +100,9 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
   ) async {
     if (_currentSession != null) {
       _stopTimer();
+
+      await notificationService.cancelScheduledNotification();
+
       _currentSession = _currentSession!.copyWith(
         status: PomodoroStatus.paused,
       );
@@ -115,10 +119,13 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
         _currentSession!.status == PomodoroStatus.paused) {
       _currentSession = _currentSession!.copyWith(
         status: PomodoroStatus.running,
+        lastResumedAt: DateTime.now(),
       );
       emit(PomodoroRunning(session: _currentSession!));
       _startTimer();
       await _updateSessionInRepository();
+
+      await _scheduleCompletionNotification();
     }
   }
 
@@ -128,7 +135,8 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
   ) async {
     _stopTimer();
 
-    // Clear current session from repository
+    await notificationService.cancelScheduledNotification();
+
     await clearCurrentSession(NoParams());
 
     _currentSession = null;
@@ -142,9 +150,10 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
     if (_currentSession != null) {
       _stopTimer();
 
+      await notificationService.cancelScheduledNotification();
+
       await _playCompletionSoundAndNotification();
 
-      // Mark current session as completed and skipped
       _currentSession = _currentSession!.copyWith(
         status: PomodoroStatus.completed,
         remainingSeconds: 0,
@@ -191,11 +200,16 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
       result.fold(
         (failure) =>
             emit(PomodoroError(message: _mapFailureToMessage(failure))),
-        (session) {
-          _currentSession = session.copyWith(status: PomodoroStatus.running);
+        (session) async {
+          _currentSession = session.copyWith(
+            status: PomodoroStatus.running,
+            lastResumedAt: DateTime.now(),
+          );
           emit(PomodoroRunning(session: _currentSession!));
           _startTimer();
-          _updateSessionInRepository();
+          await _updateSessionInRepository();
+
+          await _scheduleCompletionNotification();
         },
       );
     }
@@ -206,17 +220,14 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
     Emitter<PomodoroState> emit,
   ) async {
     if (_currentSession != null) {
-      _currentSession = _currentSession!.copyWith(
-        remainingSeconds: event.remainingSeconds,
-      );
+      _currentSession = _currentSession!.recalculateRemainingTime();
 
-      if (event.remainingSeconds <= 0) {
+      if (_currentSession!.remainingSeconds <= 0) {
         add(CompletePomodoroEvent());
         return;
-      } else {
-        emit(PomodoroRunning(session: _currentSession!));
       }
 
+      emit(PomodoroRunning(session: _currentSession!));
       await _updateSessionInRepository();
     }
   }
@@ -227,6 +238,8 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
   ) async {
     if (_currentSession != null) {
       _stopTimer();
+
+      await notificationService.cancelScheduledNotification();
 
       await _playCompletionSoundAndNotification();
 
@@ -284,11 +297,16 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
       result.fold(
         (failure) =>
             emit(PomodoroError(message: _mapFailureToMessage(failure))),
-        (session) {
-          _currentSession = session.copyWith(status: PomodoroStatus.running);
+        (session) async {
+          _currentSession = session.copyWith(
+            status: PomodoroStatus.running,
+            lastResumedAt: DateTime.now(),
+          );
           emit(PomodoroRunning(session: _currentSession!));
           _startTimer();
-          _updateSessionInRepository();
+          await _updateSessionInRepository();
+
+          await _scheduleCompletionNotification();
         },
       );
     }
@@ -303,28 +321,111 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
     final result = await getCurrentSession(NoParams());
     result.fold(
       (failure) => emit(PomodoroError(message: _mapFailureToMessage(failure))),
-      (session) {
+      (session) async {
         if (session != null) {
           _currentSession = session;
 
-          switch (session.status) {
+          if (session.status == PomodoroStatus.running &&
+              session.lastResumedAt != null) {
+            _currentSession = session.recalculateRemainingTime();
+
+            if (_currentSession!.remainingSeconds <= 0) {
+              await _handleBackgroundCompletion(emit);
+              return;
+            }
+          }
+
+          switch (_currentSession!.status) {
             case PomodoroStatus.initial:
               emit(PomodoroInitial());
               break;
             case PomodoroStatus.running:
-              emit(PomodoroRunning(session: session));
+              emit(PomodoroRunning(session: _currentSession!));
               _startTimer();
+              await _scheduleCompletionNotification();
               break;
             case PomodoroStatus.paused:
-              emit(PomodoroPaused(session: session));
+              emit(PomodoroPaused(session: _currentSession!));
               break;
             case PomodoroStatus.completed:
-              emit(PomodoroCompleted(session: session));
+              emit(PomodoroCompleted(session: _currentSession!));
               break;
           }
         } else {
           emit(PomodoroInitial());
         }
+      },
+    );
+  }
+
+  Future<void> _handleBackgroundCompletion(Emitter<PomodoroState> emit) async {
+    if (_currentSession == null) return;
+
+    await _playCompletionSoundAndNotification();
+
+    _currentSession = _currentSession!.copyWith(
+      status: PomodoroStatus.completed,
+      remainingSeconds: 0,
+      completedAt: DateTime.now(),
+    );
+
+    await _updateSessionInRepository();
+
+    final nextSessionType = SessionHelpers.getNextSessionType(
+      _currentSession!.currentSession,
+      _currentSession!.type,
+    );
+    final nextSessionNumber = SessionHelpers.getNextSessionNumber(
+      _currentSession!.currentSession,
+      _currentSession!.type,
+      _currentSession!.totalSessions,
+    );
+
+    if (SessionHelpers.shouldEndCycle(
+      _currentSession!.currentSession,
+      _currentSession!.type,
+      _currentSession!.totalSessions,
+    )) {
+      if (_currentSession!.type == PomodoroType.longBreak) {
+        await audioService.playSound(SoundType.cycleComplete);
+      }
+
+      emit(PomodoroCompleted(session: _currentSession!));
+      await clearCurrentSession(NoParams());
+      _currentSession = null;
+      return;
+    }
+
+    if (nextSessionNumber > _currentSession!.totalSessions) {
+      emit(PomodoroCompleted(session: _currentSession!));
+      await clearCurrentSession(NoParams());
+      _currentSession = null;
+      return;
+    }
+
+    emit(PomodoroCompleted(session: _currentSession!));
+
+    await Future<void>.delayed(const Duration(seconds: 1));
+
+    final result = await startPomodoroSession(
+      StartPomodoroSessionParams(
+        type: nextSessionType,
+        currentSession: nextSessionNumber,
+      ),
+    );
+
+    result.fold(
+      (failure) => emit(PomodoroError(message: _mapFailureToMessage(failure))),
+      (session) async {
+        _currentSession = session.copyWith(
+          status: PomodoroStatus.running,
+          lastResumedAt: DateTime.now(),
+        );
+        emit(PomodoroRunning(session: _currentSession!));
+        _startTimer();
+        await _updateSessionInRepository();
+
+        await _scheduleCompletionNotification();
       },
     );
   }
@@ -362,5 +463,19 @@ class PomodoroBloc extends Bloc<PomodoroEvent, PomodoroState> {
   String _mapFailureToMessage(dynamic failure) {
     // Map specific failure types to user-friendly error messages
     return 'Ocorreu um erro. Por favor, tente novamente.';
+  }
+
+  Future<void> _scheduleCompletionNotification() async {
+    if (_currentSession == null) return;
+
+    final completionTime = DateTime.now().add(
+      Duration(seconds: _currentSession!.remainingSeconds),
+    );
+
+    await notificationService.scheduleSessionCompletionNotification(
+      sessionType: _currentSession!.type,
+      sessionNumber: _currentSession!.currentSession,
+      scheduledTime: completionTime,
+    );
   }
 }
