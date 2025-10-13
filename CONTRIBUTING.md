@@ -33,8 +33,8 @@ Examples of behavior that contributes to creating a positive environment include
 
 ### Prerequisites
 
-- Flutter 3.35.4 or later
-- Dart 3.0 or later
+- Flutter 3.35.6 or later
+- Dart 3.9.2 or later
 - Git
 - A code editor (VS Code, Android Studio, etc.)
 - For testing notifications: Android device or emulator (iOS notifications work differently)

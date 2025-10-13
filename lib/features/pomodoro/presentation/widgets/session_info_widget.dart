@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/theme/theme_extensions.dart';
 import '../../domain/entities/pomodoro_session.dart';
 import '../bloc/pomodoro_bloc.dart';
 import '../bloc/pomodoro_state.dart';
@@ -44,8 +45,10 @@ class SessionInfoWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 8,
+              color: context.isDarkMode
+                  ? Colors.black.withValues(alpha: 0.3)
+                  : Colors.black.withValues(alpha: 0.1),
+              blurRadius: context.isDarkMode ? 12 : 8,
               offset: const Offset(0, 2),
             ),
           ],
@@ -53,11 +56,15 @@ class SessionInfoWidget extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.timeline, size: 20),
+            Icon(Icons.timeline, size: 20, color: context.textPrimary),
             const SizedBox(width: 8),
             Text(
               'Sessão $currentSession de $totalSessions',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: context.textPrimary,
+              ),
             ),
           ],
         ),
@@ -69,64 +76,81 @@ class SessionInfoWidget extends StatelessWidget {
     if (state is! PomodoroRunning &&
         state is! PomodoroPaused &&
         state is! PomodoroCompleted) {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Icon(Icons.access_time, size: 32, color: Colors.grey.shade400),
-            const SizedBox(height: 8),
-            Text(
-              'Aguardando início da sessão',
-              style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-            ),
-          ],
+      return Builder(
+        builder: (context) => Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Icon(
+                Icons.access_time,
+                size: 32,
+                color: context.timerPausedColor,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Aguardando início da sessão',
+                style: TextStyle(fontSize: 14, color: context.textTertiary),
+              ),
+            ],
+          ),
         ),
       );
     }
 
     final session = (state as dynamic).session as PomodoroSession;
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildSessionDot(
-                0,
-                session.currentSession,
-                session.totalSessions,
-              ),
-              _buildSessionDot(
-                1,
-                session.currentSession,
-                session.totalSessions,
-              ),
-              _buildSessionDot(
-                2,
-                session.currentSession,
-                session.totalSessions,
-              ),
-              _buildSessionDot(
-                3,
-                session.currentSession,
-                session.totalSessions,
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            _getProgressMessage(session),
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-            textAlign: TextAlign.center,
-          ),
-        ],
+    return Builder(
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildSessionDot(
+                  context,
+                  0,
+                  session.currentSession,
+                  session.totalSessions,
+                ),
+                _buildSessionDot(
+                  context,
+                  1,
+                  session.currentSession,
+                  session.totalSessions,
+                ),
+                _buildSessionDot(
+                  context,
+                  2,
+                  session.currentSession,
+                  session.totalSessions,
+                ),
+                _buildSessionDot(
+                  context,
+                  3,
+                  session.currentSession,
+                  session.totalSessions,
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              _getProgressMessage(session),
+              style: TextStyle(fontSize: 12, color: context.textTertiary),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildSessionDot(int index, int currentSession, int totalSessions) {
+  Widget _buildSessionDot(
+    BuildContext context,
+    int index,
+    int currentSession,
+    int totalSessions,
+  ) {
     final workSessionsCompleted = (currentSession - 1).clamp(0, totalSessions);
 
     final isCompleted = index < workSessionsCompleted;
@@ -135,11 +159,14 @@ class SessionInfoWidget extends StatelessWidget {
 
     Color dotColor;
     if (isCompleted) {
-      dotColor = Colors.green.shade400;
+      dotColor = context.timerShortBreakColor;
     } else if (isCurrent) {
-      dotColor = Colors.blue.shade400;
+      dotColor = context.timerLongBreakColor;
     } else {
-      dotColor = Colors.grey.shade300;
+      dotColor = context.adaptiveColor(
+        light: Colors.grey.shade300,
+        dark: Colors.grey.shade700,
+      );
     }
 
     return Container(
@@ -149,7 +176,16 @@ class SessionInfoWidget extends StatelessWidget {
         shape: BoxShape.circle,
         color: dotColor,
         border: isCurrent
-            ? Border.all(color: Colors.blue.shade600, width: 2)
+            ? Border.all(color: context.timerLongBreakColor, width: 2)
+            : null,
+        boxShadow: context.isDarkMode && (isCompleted || isCurrent)
+            ? [
+                BoxShadow(
+                  color: dotColor.withValues(alpha: 0.4),
+                  blurRadius: 4,
+                  spreadRadius: 1,
+                ),
+              ]
             : null,
       ),
     );

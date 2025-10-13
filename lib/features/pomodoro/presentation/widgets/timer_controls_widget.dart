@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/theme_extensions.dart';
 import '../../../../core/utils/dialog_utils.dart';
 import '../bloc/pomodoro_bloc.dart';
 import '../bloc/pomodoro_event.dart';
@@ -36,16 +38,22 @@ class TimerControlsWidget extends StatelessWidget {
   }
 
   Widget _buildStartMessage() {
-    return Column(
-      children: [
-        Icon(Icons.play_circle_outline, size: 64, color: Colors.grey.shade400),
-        const SizedBox(height: 16),
-        Text(
-          'Escolha um tipo de sessão\npara começar',
-          style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
-          textAlign: TextAlign.center,
-        ),
-      ],
+    return Builder(
+      builder: (context) => Column(
+        children: [
+          Icon(
+            Icons.play_circle_outline,
+            size: 64,
+            color: context.timerPausedColor,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Escolha um tipo de sessão\npara começar',
+            style: TextStyle(fontSize: 16, color: context.textTertiary),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 
@@ -64,7 +72,7 @@ class TimerControlsWidget extends StatelessWidget {
                 icon: const Icon(Icons.pause),
                 label: const Text('Pausar'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange.shade400,
+                  backgroundColor: AppColors.accentOrange,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
@@ -79,18 +87,25 @@ class TimerControlsWidget extends StatelessWidget {
             const SizedBox(width: 12),
             // Reset button
             Flexible(
-              child: ElevatedButton.icon(
+              child: OutlinedButton.icon(
                 onPressed: () {
                   DialogUtils.showResetConfirmation(context);
                 },
-                icon: const Icon(Icons.refresh),
-                label: const Text('Resetar'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey.shade400,
-                  foregroundColor: Colors.white,
+                icon: const Icon(Icons.replay),
+                label: const Text('Reiniciar'),
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: context.adaptiveColor(
+                    light: Colors.white,
+                    dark: Colors.transparent,
+                  ),
+                  foregroundColor: context.timerPausedColor,
+                  side: BorderSide(color: context.timerPausedColor),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
                     vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
                   ),
                 ),
               ),
@@ -110,7 +125,7 @@ class TimerControlsWidget extends StatelessWidget {
               icon: const Icon(Icons.skip_next),
               label: const Text('Pular Sessão'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple.shade400,
+                backgroundColor: AppColors.accentPurple,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
@@ -139,7 +154,7 @@ class TimerControlsWidget extends StatelessWidget {
                 icon: const Icon(Icons.play_arrow),
                 label: const Text('Continuar'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade400,
+                  backgroundColor: context.timerShortBreakColor,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
@@ -161,7 +176,7 @@ class TimerControlsWidget extends StatelessWidget {
                 icon: const Icon(Icons.refresh),
                 label: const Text('Resetar'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey.shade400,
+                  backgroundColor: context.timerPausedColor,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
@@ -188,7 +203,7 @@ class TimerControlsWidget extends StatelessWidget {
               icon: const Icon(Icons.skip_next),
               label: const Text('Pular Sessão'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple.shade400,
+                backgroundColor: AppColors.accentPurple,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
@@ -213,7 +228,7 @@ class TimerControlsWidget extends StatelessWidget {
           icon: const Icon(Icons.refresh),
           label: const Text('Nova Sessão'),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue.shade400,
+            backgroundColor: context.timerLongBreakColor,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
             shape: RoundedRectangleBorder(
@@ -228,11 +243,18 @@ class TimerControlsWidget extends StatelessWidget {
   Widget _buildErrorState(BuildContext context, String message) {
     return Column(
       children: [
-        Icon(Icons.error_outline, size: 48, color: Colors.red.shade400),
+        Icon(
+          Icons.error_outline,
+          size: 48,
+          color: Theme.of(context).colorScheme.error,
+        ),
         const SizedBox(height: 16),
         Text(
           message,
-          style: TextStyle(fontSize: 16, color: Colors.red.shade600),
+          style: TextStyle(
+            fontSize: 16,
+            color: Theme.of(context).colorScheme.error,
+          ),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 16),
@@ -243,9 +265,9 @@ class TimerControlsWidget extends StatelessWidget {
           icon: const Icon(Icons.refresh),
           label: const Text('Tentar Novamente'),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red.shade400,
+            backgroundColor: Theme.of(context).colorScheme.error,
             foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
             ),

@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/theme_extensions.dart';
 import '../../domain/entities/pomodoro_session.dart';
 import '../bloc/pomodoro_bloc.dart';
 import '../bloc/pomodoro_state.dart';
@@ -26,7 +28,7 @@ class PomodoroTimerWidget extends StatelessWidget {
                   const SizedBox(height: 24),
                   _buildTimerText(state),
                   const SizedBox(height: 20),
-                  _buildStatusText(state),
+                  _buildStatusText(context, state),
                 ],
               ),
             ),
@@ -47,7 +49,7 @@ class PomodoroTimerWidget extends StatelessWidget {
     if (state is PomodoroRunning || state is PomodoroPaused) {
       final session = (state as dynamic).session as PomodoroSession;
       progress = session.progress;
-      circleColor = _getColorForType(session.type);
+      circleColor = _getColorForType(context, session.type);
     }
 
     return SizedBox(
@@ -59,10 +61,14 @@ class PomodoroTimerWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: circleColor.withValues(alpha: 0.1),
+              color: circleColor.withValues(
+                alpha: context.isDarkMode ? 0.15 : 0.1,
+              ),
               border: Border.all(
-                color: circleColor.withValues(alpha: 0.2),
-                width: 2,
+                color: circleColor.withValues(
+                  alpha: context.isDarkMode ? 0.3 : 0.2,
+                ),
+                width: context.isDarkMode ? 2.5 : 2,
               ),
             ),
           ),
@@ -72,17 +78,17 @@ class PomodoroTimerWidget extends StatelessWidget {
             painter: _CircularProgressPainter(
               progress: progress,
               color: circleColor,
-              strokeWidth: 6,
+              strokeWidth: context.isDarkMode ? 7 : 6,
             ),
           ),
           // Timer display
-          Center(child: _buildTimerDisplay(state)),
+          Center(child: _buildTimerDisplay(context, state)),
         ],
       ),
     );
   }
 
-  Widget _buildTimerDisplay(PomodoroState state) {
+  Widget _buildTimerDisplay(BuildContext context, PomodoroState state) {
     if (state is PomodoroLoading) {
       return const CircularProgressIndicator();
     }
@@ -94,17 +100,21 @@ class PomodoroTimerWidget extends StatelessWidget {
         children: [
           Text(
             session.formattedTime,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
               fontFamily: 'monospace',
+              color: context.textPrimary,
             ),
           ),
           const SizedBox(height: 2),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
-              color: _getColorForType(session.type).withValues(alpha: 0.1),
+              color: _getColorForType(
+                context,
+                session.type,
+              ).withValues(alpha: context.isDarkMode ? 0.2 : 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
@@ -112,7 +122,7 @@ class PomodoroTimerWidget extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
-                color: _getColorForType(session.type),
+                color: _getColorForType(context, session.type),
               ),
             ),
           ),
@@ -129,13 +139,13 @@ class PomodoroTimerWidget extends StatelessWidget {
             fontSize: 24,
             fontWeight: FontWeight.bold,
             fontFamily: 'monospace',
-            color: Colors.grey.shade400,
+            color: context.timerPausedColor,
           ),
         ),
         const SizedBox(height: 2),
         Text(
           'Pronto para começar',
-          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+          style: TextStyle(fontSize: 12, color: context.textTertiary),
         ),
       ],
     );
@@ -159,22 +169,22 @@ class PomodoroTimerWidget extends StatelessWidget {
     return const SizedBox.shrink();
   }
 
-  Widget _buildStatusText(PomodoroState state) {
+  Widget _buildStatusText(BuildContext context, PomodoroState state) {
     String statusText = '';
-    Color statusColor = Colors.grey;
+    Color statusColor = context.textSecondary;
 
     if (state is PomodoroRunning) {
       statusText = 'Em andamento...';
-      statusColor = Colors.green;
+      statusColor = context.timerShortBreakColor;
     } else if (state is PomodoroPaused) {
       statusText = 'Pausado';
-      statusColor = Colors.orange;
+      statusColor = AppColors.accentOrange;
     } else if (state is PomodoroCompleted) {
       statusText = 'Concluído';
-      statusColor = Colors.blue;
+      statusColor = AppColors.accentBlue;
     } else if (state is PomodoroError) {
       statusText = state.message;
-      statusColor = Colors.red;
+      statusColor = Theme.of(context).colorScheme.error;
     }
 
     if (statusText.isEmpty) return const SizedBox.shrink();
@@ -182,8 +192,11 @@ class PomodoroTimerWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: statusColor.withValues(alpha: 0.1),
+        color: statusColor.withValues(alpha: context.isDarkMode ? 0.2 : 0.1),
         borderRadius: BorderRadius.circular(20),
+        border: context.isDarkMode
+            ? Border.all(color: statusColor.withValues(alpha: 0.3), width: 1)
+            : null,
       ),
       child: Text(
         statusText,
@@ -196,14 +209,14 @@ class PomodoroTimerWidget extends StatelessWidget {
     );
   }
 
-  Color _getColorForType(PomodoroType type) {
+  Color _getColorForType(BuildContext context, PomodoroType type) {
     switch (type) {
       case PomodoroType.work:
-        return Colors.red.shade400;
+        return context.timerWorkColor;
       case PomodoroType.shortBreak:
-        return Colors.green.shade400;
+        return context.timerShortBreakColor;
       case PomodoroType.longBreak:
-        return Colors.blue.shade400;
+        return context.timerLongBreakColor;
     }
   }
 
