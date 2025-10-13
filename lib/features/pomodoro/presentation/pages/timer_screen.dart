@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/theme/theme_extensions.dart';
 import '../../../../core/utils/dialog_utils.dart';
 import '../../../../injection_container.dart' as service_locator;
 import '../../../settings/presentation/pages/settings_screen.dart';
@@ -22,10 +23,10 @@ class TimerScreen extends StatelessWidget {
           service_locator.sl<PomodoroBloc>()..add(LoadCurrentSessionEvent()),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
+          title: Text(
             '🍅 Our Pomodoro',
             style: TextStyle(
-              color: Colors.black87,
+              color: context.textPrimary,
               fontWeight: FontWeight.w600,
               fontSize: 20,
             ),
@@ -43,7 +44,7 @@ class TimerScreen extends StatelessWidget {
                   ),
                 );
               },
-              icon: const Icon(Icons.settings, color: Colors.black54),
+              icon: Icon(Icons.settings, color: context.textSecondary),
               tooltip: 'Configurações',
             ),
             BlocBuilder<PomodoroBloc, PomodoroState>(
@@ -53,7 +54,7 @@ class TimerScreen extends StatelessWidget {
                   onPressed: () {
                     DialogUtils.showResetConfirmation(context);
                   },
-                  icon: const Icon(Icons.refresh, color: Colors.black54),
+                  icon: Icon(Icons.refresh, color: context.textSecondary),
                   tooltip: 'Resetar Timer',
                 );
               },
@@ -103,20 +104,20 @@ class _SessionTypeSelector extends StatelessWidget {
           children: [
             FloatingActionButton.extended(
               onPressed: () => _startSession(context, PomodoroType.work),
-              backgroundColor: Colors.red.shade400,
+              backgroundColor: context.timerWorkColor,
               icon: const Icon(Icons.work),
               label: const Text('Trabalho'),
             ),
             const SizedBox(width: 8),
             FloatingActionButton.small(
               onPressed: () => _startSession(context, PomodoroType.shortBreak),
-              backgroundColor: Colors.green.shade400,
+              backgroundColor: context.timerShortBreakColor,
               child: const Icon(Icons.coffee),
             ),
             const SizedBox(width: 8),
             FloatingActionButton.small(
               onPressed: () => _startSession(context, PomodoroType.longBreak),
-              backgroundColor: Colors.blue.shade400,
+              backgroundColor: context.timerLongBreakColor,
               child: const Icon(Icons.spa),
             ),
           ],

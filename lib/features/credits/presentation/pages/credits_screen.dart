@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../core/theme/theme_extensions.dart';
+
 class CreditsScreen extends StatelessWidget {
   const CreditsScreen({super.key});
 
@@ -8,14 +10,17 @@ class CreditsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Créditos',
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            color: context.textPrimary,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        iconTheme: const IconThemeData(color: Colors.black54),
+        iconTheme: IconThemeData(color: context.textSecondary),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
