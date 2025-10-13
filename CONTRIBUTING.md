@@ -73,7 +73,7 @@ When you create a bug report, please include:
 - **Actual behavior**
 - **Screenshots** if applicable
 - **Device information** (OS, version, etc.)
-- **App version** (current: v0.3.1)
+- **App version** (current: v0.3.3)
 - **Notification permissions** (if reporting notification issues)
 - **Platform-specific details** (Android API level, iOS version)
 

@@ -1,7 +1,7 @@
 name: our_pomodoro
 description: "A beautiful Pomodoro Timer app built with Flutter following Clean Architecture principles."
 publish_to: 'none'
-version: 0.3.2+5
+version: 0.3.3+6
 
 environment:
   sdk: ^3.9.2

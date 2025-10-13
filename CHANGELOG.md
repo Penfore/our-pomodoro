@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Enhanced dark theme design
 - iOS native interface with Cupertino widgets
 - Adaptive design that feels native on each platform
 - Smooth animations and transitions
@@ -16,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Customizable timer durations
 - Multiple sound themes
 - Multiple language support
+
+### [0.3.3] - 2025-10-13
+
+### Enhanced dark theme design
 
 ## [0.3.2] - 2025-10-07
 

@@ -11,7 +11,7 @@ We currently support the following versions with security updates:
 | 0.1.x   | :x:                |
 | < 0.1   | :x:                |
 
-**Note**: We recommend using the latest released version (v0.3.2) for the best experience and security updates.
+**Note**: We recommend using the latest released version (v0.3.3) for the best experience and security updates.
 
 ## Reporting a Vulnerability
 
